@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Kaede's Pizzaria">
+    <title>Kaede's Pizzaria</title>
+    <link rel="stylesheet" href="../css/pizza.css">
+    <link rel="stylesheet" href="../css/checkout.css">
+    <link rel="stylesheet" href="../css/payment.css">
+</head>
+    <div>
+        <!-- MENU OVERLAY -->
+        <div class="menu-overlay" id="menuOverlay"></div>
+
+        <!-- SIDE MENU -->
+         <aside class="side-menu" id="sideMenu">
+            <div class="side-menu-header">
+                <div class="side-menu-logo">
+                    <span>🍁</span>
+                    <strong>Kaede's</strong>
+            </div>
+            <button class="side-menu-close" id="closeMenu">
+                ✖
+            </button>
+        </div>
+        <div class="user-greeting">
+            <span class="greeting-icon">👋</span>
+
+            <div>
+                <p>Hello,</p>
+                <strong>Guest!</strong>
+            </div>
+        </div>
+        
+        <nav class="side-menu-nav">
+            <a href="#">
+                <span>🏠</span>
+                Home
+            </a>
+
+            <a href="#cart">
+                <span>🛒</span>
+                My Cart
+            </a>
+
+            <a href="#hours">
+                <span>⏰</span>
+                Opening Hours
+            </a>
+
+            <a href="#location">
+                <span>📍</span>
+                Location
+            </a>
+
+            <a href="#about">
+                <span>ℹ️</span>
+                About Us
+            </a>
+        </nav>
+         </aside>
+         
+    <header class="main-header">
+        <button class="menu-button" id="openMenu">
+            ☰
+        </button>
+
+        <div class="logo">
+            <span>🍁</span>
+            <h1>Kaede's</h1>
+            <p>Pizzaria</p>
+        </div>
+
+        <button class="theme-button">
+            ☀️
+        </button>
+    </header>
+    <nav class="category-nav">
+        <a href="#promotions">Promotions</a>
+        <a href="#savory-pizzas">Savory Pizzas</a>
+        <a href="#sweet-pizzas">Sweet Pizzas</a>
+        <a href="#sides">Sides</a>
+        <a href="#drinks">Drinks</a>
+
+       
+    </nav>
+     <div>
+            <section class="hero">
+                <div class="hero-content">
+                    <span class="hero-subtitle">
+                        KAEDE'S PIZZARIA
+                    </span>
+                    <h2>
+                        Good Pizza.<br>
+                        Made with care.
+                    </h2>
+                    <p>
+                        Fresf ingreients, handcrafted flavorsm and a little piece of Kaede in every slice.
+                    </p>
+
+                    <a href="#menu" class="hero-button">
+                        Order now
+                    </a>
+                </div>
+                <div class="hero-image">
+
+    <div class="hero-circle circle-one"></div>
+    <div class="hero-circle circle-two"></div>
+
+    <span class="hero-decoration">🍁</span>
+
+    <div class="pizza-placeholder">
+        🍕
+    </div>
+
+</div>
+                
+            </section>
+
+            <section class="menu-section" id="promotions">
+
+                <div class="section-heading">
+                    <span>Special offers</span>
+                    <h2>Promotions</h2>
+                    <p>Good pizza tastes even better with a good deal.</p>
+
+                </div>
+
+                <div class="pizza-grid">
+
+                    <article class="pizza-card">
+
+                        <div class="pizza-image">
+                            <span>🍕</span>
+
+                            <span class="promotion-badge">
+                                -20%
+                            </span>
+                        </div>
+                        <div class="pizza-info">
+
+                            <div class="pizza-title">
+                                <h3>Kaede's Special</h3>
+
+                                <span class="pizza-price"></span>
+                                <span class="pizza-price">
+                                    $12.90
+                                </span>
+                            </div>
+                            <p>
+                                Mozzarella, pepperoni, mushrooms, onions and our signature sauce.
+                            </p>
+                            <button class="add-button" onclick="openPizzaDetails(1)">Add +</button>
+                            
+                        </div>
+                    </article>
+
+                </div>
+            </section>
+
+            <section class="menu-section" id="savory-pizzas">
+                <div class="section-heading">
+                    <span>Our classics</span>
+                    <h2>Savory Pizzas</h2>
+                    <p>
+                        Handcrafted pizzas made with fresh ingredients.
+                    </p>
+                </div>
+
+                <div class="pizza-grid">
+    <!-- Pizza cards will be generated here -->
+</div>
+
+            </section>
+
+            <section class="menu-section" id="sweet-pizzas">
+                <div class="section-heading">
+                    <span>For your sweet side</span>
+                    <h2>Sweet Pizzas</h2>
+                    <p>A little sweetness to finish your meal.</p>
+                </div>
+
+                <div class="pizza-grid">
+                    <!--Pizza cards will go here-->
+                </div>
+
+            </section>
+
+            <section class="menu-section" id="sides">
+
+                <div class="section-heading">
+                    <span>Something extra</span>
+                    <h2>Sides</h2>
+                    <p>The perfect companions for your pizza.</p>
+
+                </div>
+                <div class="pizza-grid"></div>
+
+                <!--Side card will go here-->
+
+            </section>
+
+            <section class="menu-section" id="drinks">
+                <div class="section-heading">
+        <span>Stay refreshed</span>
+        <h2>Drinks</h2>
+        <p>Complete your order with something refreshing.</p>
+    </div>
+
+    <div class="pizza-grid">
+
+        <!-- Drink cards will go here -->
+
+    </div>
+            </section>
+
+            <!-- CART SECTION -->
+             <section class="cart-section" id="cart">
+
+                <div class="section-heading">
+                    <span>Your order</span>
+                    <h2>My Cart</h2>
+                    <p>Review your selected items</p>
+                </div>
+                <div class="cart-container">
+
+                    <!--Cart items-->
+
+                    <div class="cart-items" id="cartItems">
+
+                        <div class="empty-cart">
+                            <span>🛒</span>
+                            <p>Your cart is empty.</p>
+                            <p>Add a pizza to start your order.</p>
+                        </div>
+                        
+                </div>
+
+                <!-- CART SUMMARY -->
+                 <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <strong id="cartSubtotal">$0.00</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Delivery</span>
+                        <strong id="deliveryFee">$0.00</strong>
+                    </div>
+
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <strong id="cartTotal">$0.00</strong>
+                    </div>
+
+                    <button
+                    class="checkout-button"
+                    id="checkoutButton">
+                Checkout
+            </button>
+                </div>
+
+                </div>
+             </section>
+
+             <!-- CHECKOUT -->
+
+             <div class="modal-overlay" id="checkoutModal">
+                <div class="checkout-modal">
+                    <!-- CLOSE-->
+                     <button class="modal-close"
+                     id="closeCheckoutModal">
+                        ×
+                    </button>
+                    <!-- HEADER  -->
+                     <div class="checkout-header">
+                        <span>Almost there!</span>
+                        <h2>Checkout</h2>
+                        <p>
+                            Complete your information to place your order.
+                        </p>
+                     </div>
+                     <!-- CUSTOMER INFORMATION-->
+                      <div class="checkout-section">
+                        <h3>Customer Information</h3>
+                        <div class="checkout-field">
+                            <label for="customerName">Name</label>
+                            <input
+                            type="text"
+                            id="customerName"
+                            placeholder="Your name"
+                            maxlength="80">
+                        </div>
+                        <div class="checkout-field">
+                            <label for="customerPhone">Phone</label>
+                            <input
+                            type="tel"
+                            id="customerPhone"
+                            placeholder="(00) 00000-0000"
+                            maxlength="20">
+                        </div>
+                      </div>
+                      <!-- DELIVERY ADDRESS-->
+                       <div class="checkout-section">
+                        <h3>Delivery Address</h3>
+
+                        <div class="checkout-field">
+                            <label for="customerStreet">
+                                Street
+                            </label>
+
+                            <input type="text"
+                            id="customerStreet"
+                            placeholder="Street name"
+                            maxlength="100">
+                        </div>
+
+                        <div class="checkout-row">
+                            <div class="checkout-field">
+                                <label for="customerNumber">
+                                    Number
+                                </label>
+
+                                <input type="text"
+                                id="customerNumber"
+                                placeholder="123"
+                                maxlength="10">
+                            </div>
+
+                            <div class="checkout-field">
+                                <label for="customerNeighborhood">
+                                    Neighborhood
+                                </label>
+
+                                <input type="text"
+                                id="customerNeighborhood"
+                                placeholder="Neighborhood"
+                                maxlength="100">
+                            </div>
+                        </div>
+                        <div class="checkout-field">
+                            <label for="customerComplement">
+                                Complement
+                                <span>(optional)</span>
+                            </label>
+                            <input
+                            type="text"
+                            id="customerComplement"
+                            placeholder="Apartment, house, etc."
+                            maxlength="100">
+                        </div>
+                        </div>
+
+                        <!--PAYMENT-->
+                        <div class="checkout-section">
+                            <h3>Payment Method</h3>
+
+                            <div class="payment-options">
+                                <label class="payment-option">
+                                    <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="PIX"
+                                    <span>📱</span>
+                                </label>
+                                <label class="payment-option">
+                                    <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="CARD">
+                                    <span>💳</span>
+                                </label>
+
+                                <label class="payment-option">
+                                    <input
+                                    type="radio"
+                                    name="paymentMethod"
+                                    value="CASH">
+                                    <span>💵</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- ORDER SUMMARY-->
+                         <div class="checkout-summary">
+                            <div class="checkout-summary-row">
+                                <span>Subtotal</span>
+                                <strong id="checkoutSubtotal">$0.00</strong>
+                            </div>
+                            <div class="checkout-summary-row">
+                                <span>Delivery</span>
+                                <strong id="checkoutDeliveryFee">$0.00</strong>
+                            </div>
+
+                            <div class="checkout-summary-total">
+                                <span>Total</span>
+                                <strong id="checkoutTotal">$0.00</strong>
+                            </div>
+                         </div>
+
+                         <!-- PLACE ORDER -->
+                          <button
+                          class="place-order-button"
+                          id="placeOrderButton"
+                          >
+                        Place Order
+                    </button>
+                       </div>
+                </div>
+<!-- PIZZA MODAL -->
+<div class="modal-overlay" id="pizzaModal">
+
+    <div class="pizza-modal">
+
+        <!-- CLOSE -->
+        <button class="modal-close" id="closePizzaModal">
+            ×
+        </button>
+
+        <!-- PIZZA IMAGE -->
+        <div class="modal-pizza-image" id="modalPizzaImage">
+            🍕
+        </div>
+
+        <!-- MODAL CONTENT -->
+        <div class="modal-content">
+
+            <!-- PIZZA INFORMATION -->
+            <div class="modal-pizza-info">
+
+                <span class="modal-category">
+                    Pizza
+                </span>
+
+                <h2 id="modalPizzaName">
+                    Pizza Name
+                </h2>
+
+                <p id="modalDescription" class="modal-description">
+                    Pizza description.
+                </p>
+
+            </div>
+
+
+            <!-- FLAVORS -->
+<div class="flavors-header">
+
+    <div class="flavors-title-area">
+
+        <h3 id="flavorTitle">
+            Choose a flavor
+        </h3>
+
+        <p id="flavorHelp" class="flavors-help">
+            Choose one flavor for your pizza.
+        </p>
+
+    </div>
+
+    <span id="flavorCount" class="flavor-count">
+        1/2
+    </span>
+
+</div>
+
+
+<!-- PRIMARY FLAVOR -->
+<div
+    class="primary-flavor"
+    id="primaryFlavor"
+    style="display: none;"
+>
+
+    <div class="primary-flavor-info">
+
+        <span>
+            Your first half
+        </span>
+
+        <strong id="primaryFlavorName">
+            Pepperoni
+        </strong>
+
+    </div>
+
+    <div class="primary-flavor-check">
+        ✓
+    </div>
+
+</div>
+
+
+<div id="flavorList" class="flavor-list"></div>
+
+            <div class="modal-section crust-section">
+                <div class="crust-header">
+                    <h3>Choose your crust</h3>
+                    <p>
+                        Make your pizza even more special!
+                    </p>
+                </div>
+
+                <div
+                  id="crustOptions"
+                  class="crust-options"
+                  >
+                <!-- Crust options will be generated by JS -->
+                </div>
+            </div>
+
+
+
+            <!-- QUANTITY -->
+            <div class="modal-section">
+
+                <h3>
+                    Quantity
+                </h3>
+
+                <div class="quantity-control">
+
+                    <button id="decreaseQuantity">
+                        −
+                    </button>
+
+                    <span id="quantity">
+                        1
+                    </span>
+
+                    <button id="increaseQuantity">
+                        +
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTES -->
+            <div class="modal-section">
+
+                <h3>
+                    Notes
+                </h3>
+
+                <textarea
+                    id="pizzaNotes"
+                    placeholder="Any preferences?"
+                    maxlength="200"
+                ></textarea>
+
+            </div>
+
+
+            <!-- ADD TO CART -->
+<div class="half-and-half-question" id="halfAndHalfQuestion" style="display: none;">
+
+    <h3>Make it Half & Half?</h3>
+
+    <div class="half-and-half-actions">
+
+        <button id="chooseAnotherFlavor" type="button">
+            Yes, choose another
+        </button>
+
+        <button id="keepOneFlavor" type="button">
+            No, keep this flavor
+        </button>
+
+    </div>
+
+</div>
+            <button
+                class="modal-add-button"
+                id="addPizza"
+            >
+
+                Add to Cart •
+
+                <span id="modalPrice">
+                    0.00
+                </span>
+
+            </button>
+
+            <button
+                id="addAnotherPizza"
+                type="button"
+                class="add-another-pizza"
+                style="display: none;"
+                >
+                Add Another Pizza
+        </div>
+
+    </div>
+
+</div>
+<!-- order confirmation modal-->
+
+<div class="modal-overlay" id="orderConfirmationModal">
+    <div class="confirmation-modal">
+        <button
+        class="modal-close"
+        id="closeConfirmationModal"
+        >
+     ×
+    </button>
+
+    <div class="confirmation-icon">
+        🍕
+    </div>
+
+    <div class="confirmation-header">
+        <span>ORDER CONFIRMED!</span>
+        <h2>
+            Thank you, <strong id="confirmationName">Guest</strong>!
+        </h2>
+        <p>
+            Your order has been successfully placed.
+        </p>
+    </div>
+
+    <div class="order-number">
+        <span>Order number</span>
+        <strong id="confirmationOrderId">
+            KAE-0000
+        </strong>
+    </div>
+    <!--ITEMS-->
+    <div class="confirmation-section">
+        <h3>
+            Your Order
+        </h3>
+        <div id="confirmationItems">
+            <!-- Items generated by JS-->
+        </div>
+    </div>
+    <!--TOTALS-->
+    <div class="confirmation-summary">
+        <div class="confirmation-row">
+            <span>Subtotal</span>
+            <strong id="confirmationSubtotal"> R$ 0.00</strong>
+        </div>
+
+        <div class="confirmation-row">
+            <span>Delivery</span>
+            <strong id="confirmationDelivery"> R$ 0.00</strong>
+        </div>
+
+        <div id="confirmation-total">
+            <span>Total</span>
+            <strong id="confirmationTotal"> R$ 0.00</strong>
+        </div>
+    </div>
+
+    <!--PAYMENT-->
+    <div class="confirmation-payment">
+        <span>Payment method</span>
+        <strong id="confirmationPayment">
+            PIX
+        </strong>
+    </div>
+    <div class="confirmation-status">
+        🛵
+    </div>
+    <strong>
+        Your order is being prepared!
+    </strong>
+    <span>
+        we'll take care of the rest
+    </span>
+    </div>
+</div>
+
+<button class="back-menu-button"
+id="backToMenuButton"
+>
+Back to menu
+</button>
+</div>
+</div>
+        </main>
+
+
+
+        <script src="../js/data.js"></script>
+    <script src="../js/pizza.js"></script>
+   <script src="../js/cart.js"></script>
+</body>
+</html>

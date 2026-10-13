@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Kaede's Pizzaria — Admin Panel</title>
+
+    <link
+        rel="stylesheet"
+        href="../css/adm.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- ==============================
+         ADMIN PANEL
+    =============================== -->
+
+    <div class="admin-layout">
+
+
+        <!-- ==============================
+             SIDEBAR
+        =============================== -->
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-brand">
+
+                <div class="brand-icon">
+                    🍁
+                </div>
+
+                <div>
+                    <strong>
+                        Kaede's
+                    </strong>
+
+                    <span>
+                        Pizzaria
+                    </span>
+                </div>
+
+            </div>
+
+
+            <nav class="admin-navigation">
+
+<button class="admin-nav-item active" id="dashboardNav">
+                    <span>▦</span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </button>
+
+
+<button class="admin-nav-item" id="ordersNav">
+                    <span>📦</span>
+
+                    <span>
+                        Orders
+                    </span>
+
+                </button>
+
+
+                <button class="admin-nav-item" id="productsNav">
+
+                    <span>🍕</span>
+
+                    <span>
+                        Products
+                    </span>
+
+                </button>
+
+
+                <button class="admin-nav-item">
+
+                    <span>📊</span>
+
+                    <span>
+                        Analytics
+                    </span>
+
+                </button>
+
+
+                <button class="admin-nav-item">
+
+                    <span>⚙️</span>
+
+                    <span>
+                        Settings
+                    </span>
+
+                </button>
+
+            </nav>
+
+
+            <div class="admin-sidebar-bottom">
+
+                <button class="admin-nav-item">
+
+                    <span>🚪</span>
+
+                    <span>
+                        Logout
+                    </span>
+
+                </button>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- ==============================
+             MAIN CONTENT
+        =============================== -->
+
+        <main class="admin-main">
+
+
+            <!-- HEADER -->
+
+            <header class="admin-header">
+
+                <div>
+
+                    <span class="page-label">
+                        ADMIN PANEL
+                    </span>
+
+                    <h1>
+                        Dashboard
+                    </h1>
+
+                </div>
+
+
+                <div class="admin-profile">
+
+                    <div class="profile-avatar">
+                        A
+                    </div>
+
+                    <div class="profile-info">
+
+                        <strong>
+                            Administrator
+                        </strong>
+
+                        <span>
+                            Store Manager
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+
+            <!-- WELCOME -->
+
+            <section class="dashboard-welcome">
+
+                <div>
+
+                    <span>
+                        Welcome back 👋
+                    </span>
+
+                    <h2>
+                        Here's what's happening today.
+                    </h2>
+
+                </div>
+
+                <div class="dashboard-date">
+                    Today
+                </div>
+
+            </section>
+
+
+
+            <!-- ==============================
+                 STATISTICS
+            =============================== -->
+
+            <section class="stats-grid">
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        📦
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Total Orders
+                        </span>
+
+                        <strong ID="totalOrders">
+                            24
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        ⏳
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Pending Orders
+                        </span>
+
+                        <strong id="pendingOrders">
+                            5
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        🍕
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Pizzas Sold
+                        </span>
+
+                        <strong id="pizzasSold">
+                            67
+                        </strong>
+
+                    </div>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <div class="stat-icon">
+                        💰
+                    </div>
+
+                    <div class="stat-info">
+
+                        <span>
+                            Revenue
+                        </span>
+
+                        <strong id="revenue">
+                            R$ 892.50
+                        </strong>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- ==============================
+                 DASHBOARD CONTENT
+            =============================== -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- SALES -->
+
+                <article class="dashboard-card sales-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                Overview
+                            </span>
+
+                            <h3>
+                                Sales Overview
+                            </h3>
+
+                        </div>
+
+                        <button class="period-button">
+                            This week ▾
+                        </button>
+
+                    </div>
+
+
+                    <div class="sales-chart" id="salesChart">
+
+    <div class="sales-chart-bars" id="salesChartBars">
+    </div>
+
+    <div class="sales-chart-labels" id="salesChartLabels">
+    </div>
+
+</div>
+
+                </article>
+
+
+
+                <!-- ORDER STATUS -->
+
+                <article class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <span>
+                                Orders
+                            </span>
+
+                            <h3>
+                                Order Status
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="status-list">
+
+                        <div class="status-item">
+    <span>Pending</span>
+    <strong id="pendingStatusCount">0</strong>
+</div>
+
+<div class="status-item">
+    <span>Preparing</span>
+    <strong id="preparingStatusCount">0</strong>
+</div>
+
+<div class="status-item">
+    <span>Out for delivery</span>
+    <strong id="deliveryStatusCount">0</strong>
+</div>
+
+<div class="status-item">
+    <span>Completed</span>
+    <strong id="completedStatusCount">0</strong>
+</div>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- ==============================
+                 RECENT ORDERS
+            =============================== -->
+
+            <section class="dashboard-card recent-orders">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span>
+                            Orders
+                        </span>
+
+                        <h3>
+                            Recent Orders
+                        </h3>
+
+                    </div>
+
+                    <button class="view-all-button" id="viewAllOrders">
+                        View all →
+                    </button>
+
+                </div>
+
+
+                <div class="orders-table" id="recentOrdersTable">
+                    
+                </div>
+
+            </section>
+
+            <!-- ==============================
+     ORDERS PAGE
+=============================== -->
+
+<section class="admin-page orders-page" id="ordersPage">
+
+    <div class="page-section-header">
+
+        <div>
+            <span>ORDERS</span>
+
+            <h2>All Orders</h2>
+        </div>
+
+        <div class="orders-actions">
+
+            <input
+                type="text"
+                id="orderSearch"
+                placeholder="Search orders..."
+            >
+
+            <select id="orderStatusFilter">
+
+                <option value="all">
+                    All Status
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Preparing">
+                    Preparing
+                </option>
+
+                <option value="Out for delivery">
+                    Out for delivery
+                </option>
+
+                <option value="Completed">
+                    Completed
+                </option>
+
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <div class="orders-page-table">
+
+        <div class="orders-page-header">
+
+            <span>Order</span>
+            <span>Customer</span>
+            <span>Date</span>
+            <span>Items</span>
+            <span>Total</span>
+            <span>Status</span>
+            <span>Action</span>
+
+        </div>
+
+        <div id="ordersPageList">
+
+            <!-- Orders will be rendered here -->
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===============================
+     PRODUCTS PAGE
+=============================== -->
+
+<section class="admin-page products-page" id="productsPage">
+
+    <div class="page-section-header">
+
+        <div>
+            <span>PRODUCTS</span>
+            <h2>All Products</h2>
+        </div>
+
+        <div class="products-actions">
+
+            <input
+                type="text"
+                id="productSearch"
+                placeholder="Search products..."
+            >
+
+            <select id="productCategoryFilter">
+
+                <option value="all">
+                    All Categories
+                </option>
+
+                <option value="savory">
+                    Savory
+                </option>
+
+                <option value="sweet">
+                    Sweet
+                </option>
+                <option value="drinks">
+                    Drinks
+                </option>
+                <option value="sides">
+                    Sides
+                </option>
+
+            </select>
+
+            <button
+                class="add-product-button"
+                id="addProductButton"
+            >
+                + Add Product
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCTS LIST -->
+
+    <div
+        class="products-grid"
+        id="productsGrid"
+    >
+
+        <!-- Products will be rendered here -->
+
+    </div>
+
+</section>
+
+
+        </main>
+
+    </div>
+
+
+<!-- ========================================
+     ADD PRODUCT MODAL
+======================================== -->
+
+<div class="product-modal-overlay" id="productModal">
+
+    <div class="product-modal">
+
+        <button
+            class="product-modal-close"
+            id="closeProductModal"
+        >
+            ×
+        </button>
+
+
+<div class="product-modal-header">
+    <span>PRODUCTS</span>
+
+    <h2 id="productModalTitle">
+        Add Product
+    </h2>
+
+    <p id="productModalDescription">
+        Create a new product for your menu.
+    </p>
+</div>
+
+
+        <form id="productForm">
+
+            <!-- IMAGE -->
+            <div class="product-form-group">
+
+                <label for="productImage">
+                    Product Image
+                </label>
+
+                <input
+                    type="url"
+                    id="productImage"
+                    placeholder="https://example.com/pizza.jpg"
+                    required
+                >
+
+            </div>
+
+
+            <!-- NAME -->
+            <div class="product-form-group">
+
+                <label for="productName">
+                    Product Name
+                </label>
+
+                <input
+                    type="text"
+                    id="productName"
+                    placeholder="Margherita Pizza"
+                    required
+                >
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+            <div class="product-form-group">
+
+                <label for="productDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="productDescription"
+                    placeholder="Tomato sauce, mozzarella and basil..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- PRICE + CATEGORY -->
+            <div class="product-form-row">
+
+                <div class="product-form-group">
+
+                    <label for="productPrice">
+                        Price
+                    </label>
+
+                    <input
+                        type="number"
+                        id="productPrice"
+                        placeholder="39.90"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="product-form-group">
+
+                    <label for="productCategory">
+                        Category
+                    </label>
+
+                    <select id="productCategory" required>
+
+                        <option value="">
+                            Select category
+                        </option>
+
+                        <option value="savory">
+                            Savory
+                        </option>
+
+                        <option value="sweet">
+                            Sweet
+                        </option>
+                        <option value="drinks">
+                            Drinks
+                        </option>
+                        <option value="sides">
+                            Sides
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+            <div class="product-form-actions">
+
+                <button
+                    type="button"
+                    class="product-cancel-button"
+                    id="cancelProductButton"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="product-save-button"
+                    id="productSaveButton"
+                >
+                    Add Product
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+    <!-- ========================================
+     ORDER DETAILS MODAL
+======================================== -->
+
+<div class="order-modal-overlay" id="orderDetailsModal">
+
+    <div class="order-details-modal">
+
+        <button
+            class="order-modal-close"
+            id="closeOrderDetails"
+        >
+            ×
+        </button>
+
+
+        <div class="order-details-header">
+
+            <span>
+                ORDER DETAILS
+            </span>
+
+            <h2 id="detailsOrderId">
+                KAE-0000
+            </h2>
+
+        </div>
+
+
+        <div class="order-details-section">
+
+            <h3>
+                Customer
+            </h3>
+
+            <p>
+                <strong id="detailsCustomerName">
+                    Guest
+                </strong>
+            </p>
+
+            <p id="detailsCustomerPhone">
+                —
+            </p>
+
+            <p id="detailsCustomerAddress">
+                —
+            </p>
+
+        </div>
+
+
+        <div class="order-details-section">
+
+            <h3>
+                Order Items
+            </h3>
+
+            <div id="detailsOrderItems">
+
+            </div>
+
+        </div>
+
+
+        <div class="order-details-summary">
+
+            <div>
+                <span>Subtotal</span>
+                <strong id="detailsSubtotal">
+                    R$ 0.00
+                </strong>
+            </div>
+
+            <div>
+                <span>Delivery</span>
+                <strong id="detailsDelivery">
+                    R$ 0.00
+                </strong>
+            </div>
+
+            <div class="details-total">
+                <span>Total</span>
+                <strong id="detailsTotal">
+                    R$ 0.00
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="order-details-section">
+
+            <h3>
+                Payment
+            </h3>
+
+            <strong id="detailsPayment">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="order-details-section">
+    <h3>Status</h3>
+
+    <select id="detailsStatusSelect">
+
+        <option value="Pending">
+            Pending
+        </option>
+
+        <option value="Preparing">
+            Preparing
+        </option>
+
+        <option value="Out for delivery">
+            Out for delivery
+        </option>
+
+        <option value="Completed">
+            Completed
+        </option>
+
+    </select>
+
+    <button id="updateStatusButton">
+        Update Status
+    </button>
+</div>
+
+    </div>
+
+</div>
+
+
+    <script src="../js/adm.js"></script>
+
+</body>
+
+</html>
