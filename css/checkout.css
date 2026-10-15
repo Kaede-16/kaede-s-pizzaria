@@ -297,3 +297,20 @@
     }
 
 }
+
+.checkout-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* CONFIRMATION PRODUCT IMAGES */
+#confirmationItems img {
+    width: 70px;
+    height: 70px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}

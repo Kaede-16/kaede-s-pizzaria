@@ -2203,3 +2203,18 @@ logo h1 {
 .add-another-pizza:active {
     transform: translateY(0);
 }
+
+
+/* FIX: OVERLAY DOS MODAIS */
+.modal-overlay.active {
+    background: rgba(0, 0, 0, 0.75);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* FIX: MODAL DE CONFIRMAÇÃO */
+.modal-overlay.active .confirmation-modal {
+    background-color: #181818;
+    opacity: 1;
+    color: #f5f5f5;
+}

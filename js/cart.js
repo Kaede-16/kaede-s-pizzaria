@@ -451,7 +451,7 @@ function showOrderConfirmation(order) {
 <span>
     ${item.quantity} ×
     ${item.flavors && item.flavors.length
-        ? item.flavorsjoin(" + ")
+        ? item.flavors.join(" + ")
         : item.pizza
     }
     ${item.crust ? ` | Crust: ${item.crust}` : ""}
