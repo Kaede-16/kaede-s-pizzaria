@@ -3,14 +3,15 @@
    ============================== */
 
 .checkout-modal {
+    background-color: #181818;
+    opacity: 1;
+    color: #f5f5f5;
     position: relative;
 
     width: min(92%, 600px);
     max-height: 90vh;
 
     overflow-y: auto;
-
-    background: var(--background-color);
     border-radius: 24px;
 
     padding: 32px;
@@ -74,6 +75,7 @@
 /* FIELDS */
 
 .checkout-field {
+    
     display: flex;
     flex-direction: column;
 
@@ -94,6 +96,7 @@
 
 
 .checkout-field input {
+    
     width: 100%;
     box-sizing: border-box;
 
