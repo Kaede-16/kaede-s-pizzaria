@@ -86,7 +86,7 @@
                 </button>
 
 
-                <button class="admin-nav-item">
+                <button class="admin-nav-item" id="analyticsNav" >
 
                     <span>📊</span>
 
@@ -97,7 +97,7 @@
                 </button>
 
 
-                <button class="admin-nav-item">
+                <button class="admin-nav-item" id="settingsNav">
 
                     <span>⚙️</span>
 
@@ -112,7 +112,7 @@
 
             <div class="admin-sidebar-bottom">
 
-                <button class="admin-nav-item">
+                <button class="admin-nav-item" id="logoutNav">
 
                     <span>🚪</span>
 
@@ -566,10 +566,388 @@
 
 </section>
 
+<!-- Analytics Section -->
+ <section class="admin-page analytics-page" id="analyticsPage">
 
-        </main>
+    <div class="page-section-header">
+        <div>
+            <span>ANALYTICS</span>
+            <h2>Sales Analytics</h2>
+            <p>Understand now your store is performing</p>
+        </div>
+    </div>
+
+    <div class="stats-grid dashboard-stats-grid">
+        
+<article class="stat-card">
+    <div class="stat-icon">
+        💰
+    </div>
+
+    <div>
+        <span>Total Revenue</span>
+
+        <strong id="analyticsRevenue">$0.00</strong>
+
+        <span
+            class="analytics-growth"
+            id="analyticsRevenueGrowth"
+        >
+            Compared to previous period
+        </span>
+    </div>
+</article>
+
+
+        
+<article class="stat-card">
+    <div class="stat-icon">📦</div>
+
+    <div>
+        <span>Total Orders</span>
+
+        <strong id="analyticsOrders">0</strong>
+
+        <span
+            class="analytics-growth"
+            id="analyticsOrdersGrowth"
+        >
+            Compared to previous period
+        </span>
+    </div>
+</article>
+
+
+        <article class="stat-card">
+            <div class="stat-icon">🍕</div>
+            <div>
+                <span>Item Sold</span>
+                <strong id="analyticsItemsSold">0</strong>
+            </div>
+        </article>
+
+        <article class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div>
+                <span>Completed Orders</span>
+                <strong id="analyticsCompleted">0</strong>
+            </div>
+        </article>
 
     </div>
+
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div>
+                <span>PERFORMANCE</span>
+                <h3>Sales Overview</h3>
+            </div>
+        </div>
+
+        
+<div class="analytics-chart-controls">
+
+    <div class="analytics-chart-description">
+        <span>REVENUE & ORDERS</span>
+        <p>
+            Track your store's sales performance over time.
+        </p>
+    </div>
+
+    <select id="analyticsPeriodFilter"
+            aria-label="Select analytics period">
+
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+        <option value="90">Last 90 days</option>
+
+    </select>
+
+</div>
+
+<div class="analytics-chart-legend">
+
+    <span class="legend-item">
+        <span class="legend-dot revenue-legend"></span>
+        Revenue (USD)
+    </span>
+
+    <span class="legend-item">
+        <span class="legend-dot orders-legend"></span>
+        Orders
+    </span>
+
+</div>
+
+<div class="analytics-chart-container">
+
+    <canvas
+        id="salesAnalyticsChart"
+        aria-label="Sales revenue and order trends"
+        role="img">
+    </canvas>
+    
+<div class="analytics-legend">
+
+    <div class="legend-item">
+        <span class="legend-line revenue-current"></span>
+        <span>Current Revenue</span>
+    </div>
+
+    <div class="legend-item">
+        <span class="legend-line revenue-previous"></span>
+        <span>Previous Revenue</span>
+    </div>
+
+    <div class="legend-item">
+        <span class="legend-line orders-current"></span>
+        <span>Current Orders</span>
+    </div>
+
+    <div class="legend-item">
+        <span class="legend-line orders-previous"></span>
+        <span>Previous Orders</span>
+    </div>
+
+</div>
+
+    <div
+    id="analyticsChartTooltip"
+    class="analytics-chart-tooltip"
+    hidden
+></div>
+
+    <p id="analyticsChartEmpty" hidden>
+        No sales data available for this period.
+    </p>
+
+</div>
+
+    </div>
+
+
+<!-- ORDER INSIGHTS -->
+<div class="dashboard-card order-insights-card">
+
+    <div class="card-header">
+        <div>
+            <span>ORDER PERFORMANCE</span>
+            <h3>Order Insights</h3>
+            <p>Track your orders by status.</p>
+        </div>
+    </div>
+
+    <div class="order-insights-content">
+
+        <!-- DOUGHNUT CHART -->
+        <div class="order-doughnut-container">
+
+            <div
+                class="order-doughnut-chart"
+                id="orderInsightsChart"
+                role="img"
+                aria-label="Order distribution by status"
+            >
+                <div class="order-doughnut-center">
+                    <strong id="orderInsightsTotal">0</strong>
+                    <span>Total Orders</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- STATUS LEGEND -->
+        <div class="order-insights-legend" id="orderInsightsLegend">
+
+            <div class="order-insight-item">
+                <div class="order-insight-label">
+                    <span class="order-insight-dot pending-dot"></span>
+                    <span>Pending</span>
+                </div>
+                <div class="order-insight-values">
+                    <strong id="insightsPendingCount">0</strong>
+                    <span id="insightsPendingPercent">0%</span>
+                </div>
+            </div>
+
+            <div class="order-insight-item">
+                <div class="order-insight-label">
+                    <span class="order-insight-dot preparing-dot"></span>
+                    <span>Preparing</span>
+                </div>
+                <div class="order-insight-values">
+                    <strong id="insightsPreparingCount">0</strong>
+                    <span id="insightsPreparingPercent">0%</span>
+                </div>
+            </div>
+
+            <div class="order-insight-item">
+                <div class="order-insight-label">
+                    <span class="order-insight-dot delivery-dot"></span>
+                    <span>Out for Delivery</span>
+                </div>
+                <div class="order-insight-values">
+                    <strong id="insightsDeliveryCount">0</strong>
+                    <span id="insightsDeliveryPercent">0%</span>
+                </div>
+            </div>
+
+            <div class="order-insight-item">
+                <div class="order-insight-label">
+                    <span class="order-insight-dot completed-dot"></span>
+                    <span>Completed</span>
+                </div>
+                <div class="order-insight-values">
+                    <strong id="insightsCompletedCount">0</strong>
+                    <span id="insightsCompletedPercent">0%</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <p class="order-insights-empty" id="orderInsightsEmpty" hidden>
+        No orders available for this period.
+    </p>
+
+</div>
+
+      <!-- BEST-SELLING PRODUCTS -->
+    <div class="dashboard-card best-selling-card">
+
+        <div class="card-header">
+            <div>
+                <span>PRODUCT PERFORMANCE</span>
+                <h3>Best-Selling Products</h3>
+                <p>Discover which pizza flavors generate the most sales.</p>
+            </div>
+        </div>
+
+        <div class="best-selling-header">
+            <span>Product</span>
+            <span>Units Sold</span>
+            <span>Revenue</span>
+        </div>
+
+        <div id="bestSellingProductsList">
+            <!-- Products will be rendered here -->
+        </div>
+
+        <p id="bestSellingEmpty" hidden>
+            No product sales available yet.
+        </p>
+
+    </div>
+
+</div>
+</section>
+
+    
+<!-- SETTINGS PAGE -->
+<section class="admin-page settings-page" id="settingsPage">
+
+    <div class="page-section-header">
+        <div>
+            <span>SETTINGS</span>
+            <h2>Store Settings</h2>
+            <p>Manage your store and administrator accounts.</p>
+        </div>
+    </div>
+
+    <!-- STORE INFORMATION -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div>
+                <span>GENERAL</span>
+                <h3>Store Information</h3>
+            </div>
+        </div>
+
+        <form id="storeSettingsForm">
+
+            <label for="storeName">Store Name</label>
+            <input
+                type="text"
+                id="storeName"
+                value="Kaede's Pizzaria"
+                required
+            >
+
+            <label for="storeHours">Opening Hours</label>
+            <input
+                type="text"
+                id="storeHours"
+                placeholder="e.g. 18:00 - 23:00"
+                required
+            >
+
+            <button type="submit" class="add-product-button">
+                Save Settings
+            </button>
+
+        </form>
+    </div>
+
+    <!-- ADMINISTRATOR REGISTRATION -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <div>
+                <span>ACCESS MANAGEMENT</span>
+                <h3>Register Administrator</h3>
+            </div>
+        </div>
+
+        <form id="adminRegistrationForm">
+
+            <label for="adminName">Full Name</label>
+            <input
+                type="text"
+                id="adminName"
+                placeholder="Enter full name"
+                required
+            >
+
+            <label for="adminEmail">Email</label>
+            <input
+                type="email"
+                id="adminEmail"
+                placeholder="admin@example.com"
+                required
+            >
+
+            <label for="adminPassword">Password</label>
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Create a password"
+                minlength="8"
+                required
+            >
+
+            <button type="submit" class="add-product-button">
+                Register Administrator
+            </button>
+
+        </form>
+
+        <div class="admin-accounts-list">
+            <h3>Registered Administrators</h3>
+
+            <div id="administratorsList">
+                <!-- Administrators will be rendered here -->
+            </div>
+        </div>
+
+        </div>
+
+  
+
+    </section>
+    
+</main>
+</div>
+
 
 
 <!-- ========================================

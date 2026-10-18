@@ -12,6 +12,14 @@ const orders =
         localStorage.getItem("kaedesOrders")
     ) || [];
 
+    
+function formatUSD(value) {
+    return Number(value || 0).toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD"
+    });
+}
+
 
 // ========================================
 // DASHBOARD ELEMENTS
@@ -92,7 +100,7 @@ function updateDashboardStats() {
 
     document.getElementById("revenue")
         .textContent =
-            `R$ ${revenue.toFixed(2)}`;
+            formatUSD(revenue);
 
 
     // ========================================
@@ -115,6 +123,530 @@ function updateDashboardStats() {
         .textContent =
             completedOrders;
 }
+
+
+
+
+function updateAnalyticsStats() {
+    const analyticsRevenue =
+        document.getElementById("analyticsRevenue");
+
+    const analyticsOrders =
+        document.getElementById("analyticsOrders");
+
+    const analyticsItemsSold =
+        document.getElementById("analyticsItemsSold");
+
+    const analyticsCompleted =
+        document.getElementById("analyticsCompleted");
+
+    const revenueGrowth =
+        document.getElementById("analyticsRevenueGrowth");
+
+    const ordersGrowth =
+        document.getElementById("analyticsOrdersGrowth");
+
+    const periodFilter =
+        document.getElementById("analyticsPeriodFilter");
+
+    const period = Number(periodFilter?.value) || 7;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Current period: today and the previous (period - 1) days
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - period + 1);
+
+    // Previous period: the same number of days immediately before
+    const previousEndDate = new Date(startDate);
+    previousEndDate.setDate(startDate.getDate() - 1);
+
+    const previousStartDate = new Date(previousEndDate);
+    previousStartDate.setDate(
+        previousEndDate.getDate() - period + 1
+    );
+
+    // Parse dates using local calendar days
+    function parseOrderDate(value) {
+        if (!value) return null;
+
+        const match = String(value).match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
+        );
+
+        const date = match
+            ? new Date(
+                Number(match[1]),
+                Number(match[2]) - 1,
+                Number(match[3])
+            )
+            : new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return null;
+        }
+
+        date.setHours(0, 0, 0, 0);
+
+        return date;
+    }
+
+    // Filter current-period orders
+    const filteredOrders = orders.filter(order => {
+        const orderDate = parseOrderDate(order.date);
+
+        return orderDate &&
+            orderDate >= startDate &&
+            orderDate <= today;
+    });
+
+    // Filter previous-period orders
+    const previousOrders = orders.filter(order => {
+        const orderDate = parseOrderDate(order.date);
+
+        return orderDate &&
+            orderDate >= previousStartDate &&
+            orderDate <= previousEndDate;
+    });
+
+    // Calculate current revenue and orders
+    const totalRevenue = filteredOrders.reduce(
+        (total, order) =>
+            total + (Number(order.total) || 0),
+        0
+    );
+
+    const totalOrders = filteredOrders.length;
+
+    // Calculate previous revenue and orders
+    const previousRevenue = previousOrders.reduce(
+        (total, order) =>
+            total + (Number(order.total) || 0),
+        0
+    );
+
+    const previousTotalOrders = previousOrders.length;
+
+    // Calculate items sold in the current period
+    const totalItemsSold = filteredOrders.reduce(
+        (total, order) => {
+            const items = Array.isArray(order.items)
+                ? order.items
+                : [];
+
+            return total + items.reduce(
+                (quantity, item) =>
+                    quantity + (Number(item.quantity) || 0),
+                0
+            );
+        },
+        0
+    );
+
+    // Count completed orders in the current period
+    const completedOrders = filteredOrders.filter(
+        order => order.status === "Completed"
+    ).length;
+
+    // Safely calculate and display percentage growth
+    function updateGrowth(element, current, previous) {
+        if (!element) return;
+
+        element.classList.remove(
+            "growth-positive",
+            "growth-negative",
+            "growth-neutral"
+        );
+
+        // No sales in either period
+        if (previous === 0 && current === 0) {
+            element.textContent =
+                "0.0% vs previous period";
+
+            element.classList.add("growth-neutral");
+            return;
+        }
+
+        // Previous period had no sales, but current period does
+        if (previous === 0 && current > 0) {
+            element.textContent =
+                "New vs previous period";
+
+            element.classList.add("growth-positive");
+            return;
+        }
+
+        // Calculate percentage change
+        const percentage =
+            ((current - previous) / previous) * 100;
+
+        if (percentage > 0) {
+            element.textContent =
+                `↑ ${percentage.toFixed(1)}% vs previous period`;
+
+            element.classList.add("growth-positive");
+
+        } else if (percentage < 0) {
+            element.textContent =
+                `↓ ${Math.abs(percentage).toFixed(1)}% vs previous period`;
+
+            element.classList.add("growth-negative");
+
+        } else {
+            element.textContent =
+                "0.0% vs previous period";
+
+            element.classList.add("growth-neutral");
+        }
+    }
+
+    // Update Analytics cards
+    if (analyticsRevenue) {
+        analyticsRevenue.textContent =
+            formatUSD(totalRevenue);
+    }
+
+    if (analyticsOrders) {
+        analyticsOrders.textContent = totalOrders;
+    }
+
+    if (analyticsItemsSold) {
+        analyticsItemsSold.textContent = totalItemsSold;
+    }
+
+    if (analyticsCompleted) {
+        analyticsCompleted.textContent = completedOrders;
+    }
+
+    // Update growth indicators
+    updateGrowth(
+        revenueGrowth,
+        totalRevenue,
+        previousRevenue
+    );
+
+    updateGrowth(
+        ordersGrowth,
+        totalOrders,
+        previousTotalOrders
+    );
+}
+
+
+
+
+
+/* ========================================
+   ANALYTICS — BEST-SELLING PRODUCTS
+======================================== */
+
+function renderBestSellingProducts() {
+    const productsList = document.getElementById(
+        "bestSellingProductsList"
+    );
+
+    const emptyMessage = document.getElementById(
+        "bestSellingEmpty"
+    );
+
+    const periodFilter = document.getElementById(
+        "analyticsPeriodFilter"
+    );
+
+    if (!productsList || !emptyMessage || !periodFilter) {
+        return;
+    }
+
+    // Get the selected period: 7, 30 or 90 days
+    const period = Number(periodFilter.value) || 7;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - period + 1);
+
+    // Parse order dates using local calendar days
+    function parseOrderDate(value) {
+        if (!value) return null;
+
+        const match = String(value).match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
+        );
+
+        const date = match
+            ? new Date(
+                Number(match[1]),
+                Number(match[2]) - 1,
+                Number(match[3])
+            )
+            : new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return null;
+        }
+
+        date.setHours(0, 0, 0, 0);
+
+        return date;
+    }
+
+    const productSales = {};
+
+    // Analyze only orders within the selected period
+    orders.forEach(order => {
+        const orderDate = parseOrderDate(order.date);
+
+        if (!orderDate || orderDate < startDate || orderDate > today) {
+            return;
+        }
+
+        const items = Array.isArray(order.items)
+            ? order.items
+            : [];
+
+        items.forEach(item => {
+            const flavors = Array.isArray(item.flavors)
+                && item.flavors.length > 0
+                ? item.flavors
+                : [item.pizza || "Unknown Product"];
+
+            const quantity = Number(item.quantity) || 0;
+            const itemRevenue = Number(item.total) || 0;
+
+            // Split quantity and revenue for half-and-half pizzas
+            const quantityPerFlavor = quantity / flavors.length;
+            const revenuePerFlavor = itemRevenue / flavors.length;
+
+            flavors.forEach(flavor => {
+                const name = String(flavor).trim();
+
+                if (!name) return;
+
+                if (!productSales[name]) {
+                    productSales[name] = {
+                        name,
+                        quantity: 0,
+                        revenue: 0
+                    };
+                }
+
+                productSales[name].quantity += quantityPerFlavor;
+                productSales[name].revenue += revenuePerFlavor;
+            });
+        });
+    });
+
+    // Rank products by units sold
+    const rankedProducts = Object.values(productSales)
+        .sort((a, b) => b.quantity - a.quantity);
+
+    if (rankedProducts.length === 0) {
+        productsList.innerHTML = "";
+        emptyMessage.hidden = false;
+        emptyMessage.textContent =
+            `No product sales found in the last ${period} days.`;
+        return;
+    }
+
+    emptyMessage.hidden = true;
+
+    const totalRevenue = rankedProducts.reduce(
+        (total, product) => total + product.revenue,
+        0
+    );
+
+    const highestQuantity = Math.max(
+        ...rankedProducts.map(product => product.quantity),
+        1
+    );
+
+    productsList.innerHTML = rankedProducts
+        .map((product, index) => {
+            const percentage = totalRevenue > 0
+                ? (product.revenue / totalRevenue) * 100
+                : 0;
+
+            const barWidth =
+                (product.quantity / highestQuantity) * 100;
+
+            return `
+                <div class="best-selling-row">
+
+                    <div class="best-selling-product">
+                        <span class="best-selling-rank">
+                            ${index + 1}
+                        </span>
+
+                        <div class="best-selling-product-info">
+                            <strong>${product.name}</strong>
+
+                            <div class="best-selling-progress">
+                                <div
+                                    class="best-selling-progress-fill"
+                                    style="width: ${barWidth}%"
+                                ></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <strong class="best-selling-quantity">
+                        ${Number(product.quantity.toFixed(2))}
+                    </strong>
+
+                    <div class="best-selling-revenue">
+                        <strong>${formatUSD(product.revenue)}</strong>
+                        <span>${percentage.toFixed(1)}% of revenue</span>
+                    </div>
+
+                </div>
+            `;
+        })
+        .join("");
+}
+
+
+/* ========================================
+   ANALYTICS — ORDER INSIGHTS
+======================================== */
+
+function renderOrderInsights() {
+    const chart = document.getElementById("orderInsightsChart");
+    const totalElement = document.getElementById("orderInsightsTotal");
+    const emptyMessage = document.getElementById("orderInsightsEmpty");
+    const periodFilter = document.getElementById("analyticsPeriodFilter");
+
+    if (!chart || !totalElement || !emptyMessage || !periodFilter) {
+        return;
+    }
+
+    const period = Number(periodFilter.value) || 7;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startDate = new Date(today);
+    startDate.setDate(today.getDate() - period + 1);
+
+    // Convert order dates to local calendar days
+    function parseOrderDate(value) {
+        if (!value) return null;
+
+        const match = String(value).match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
+        );
+
+        const date = match
+            ? new Date(
+                Number(match[1]),
+                Number(match[2]) - 1,
+                Number(match[3])
+            )
+            : new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return null;
+        }
+
+        date.setHours(0, 0, 0, 0);
+
+        return date;
+    }
+
+    // Filter orders by the selected period
+    const filteredOrders = orders.filter(order => {
+        const orderDate = parseOrderDate(order.date);
+
+        return orderDate &&
+            orderDate >= startDate &&
+            orderDate <= today;
+    });
+
+    // Count each order status
+    const statuses = [
+        {
+            key: "pending",
+            name: "Pending",
+            color: "#f59e0b",
+            countId: "insightsPendingCount",
+            percentId: "insightsPendingPercent"
+        },
+        {
+            key: "preparing",
+            name: "Preparing",
+            color: "#38bdf8",
+            countId: "insightsPreparingCount",
+            percentId: "insightsPreparingPercent"
+        },
+        {
+            key: "delivery",
+            name: "Out for delivery",
+            color: "#a78bfa",
+            countId: "insightsDeliveryCount",
+            percentId: "insightsDeliveryPercent"
+        },
+        {
+            key: "completed",
+            name: "Completed",
+            color: "#22c55e",
+            countId: "insightsCompletedCount",
+            percentId: "insightsCompletedPercent"
+        }
+    ];
+
+    statuses.forEach(status => {
+        status.count = filteredOrders.filter(
+            order => order.status === status.name
+        ).length;
+    });
+
+    const total = filteredOrders.length;
+
+    totalElement.textContent = total;
+
+    // Show an empty state if there are no orders
+    if (total === 0) {
+        chart.style.background = "#292929";
+        emptyMessage.hidden = false;
+    } else {
+        emptyMessage.hidden = true;
+
+        // Build the doughnut chart using a conic gradient
+        let currentPercentage = 0;
+
+        const gradientParts = statuses.map(status => {
+            const percentage = (status.count / total) * 100;
+
+            const start = currentPercentage;
+            currentPercentage += percentage;
+
+            return `${status.color} ${start}% ${currentPercentage}%`;
+        });
+
+        chart.style.background =
+            `conic-gradient(${gradientParts.join(", ")})`;
+    }
+
+    // Update counts and percentages
+    statuses.forEach(status => {
+        const countElement = document.getElementById(status.countId);
+        const percentElement = document.getElementById(status.percentId);
+
+        const percentage = total > 0
+            ? (status.count / total) * 100
+            : 0;
+
+        if (countElement) {
+            countElement.textContent = status.count;
+        }
+
+        if (percentElement) {
+            percentElement.textContent = `${percentage.toFixed(1)}%`;
+        }
+    });
+}
+
 
 // ========================================
 // SALES OVERVIEW
@@ -249,7 +781,7 @@ salesChartBars.innerHTML =
         return `
             <div
                 class="sales-bar-wrapper"
-                data-tooltip="${label} • R$ ${day.revenue.toFixed(2)}"
+                data-tooltip="${label} • ${formatUSD(day.revenue)}"
             >
                 <div
                     class="sales-bar"
@@ -280,6 +812,405 @@ salesChartBars.innerHTML =
             `;
 
         }).join("");
+}
+
+
+/* ========================================
+   ANALYTICS — SALES CHART
+======================================== */
+
+function renderAnalyticsChart() {
+    const canvas = document.getElementById("salesAnalyticsChart");
+    const emptyMessage = document.getElementById("analyticsChartEmpty");
+    const periodFilter = document.getElementById("analyticsPeriodFilter");
+
+    if (!canvas || !emptyMessage || !periodFilter) {
+        return;
+    }
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const period = Number(periodFilter.value) || 7;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    
+    // Create the current period and its matching previous period
+    const days = [];
+
+    for (let i = period - 1; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+
+        const previousDate = new Date(date);
+        previousDate.setDate(date.getDate() - period);
+
+        days.push({
+            date,
+            previousDate,
+            revenue: 0,
+            orders: 0,
+            previousRevenue: 0,
+            previousOrders: 0
+        });
+    }
+
+    // Convert dates to local calendar days
+    function parseOrderDate(value) {
+        if (!value) return null;
+
+        const match = String(value).match(
+            /^(\d{4})-(\d{2})-(\d{2})$/
+        );
+
+        const date = match
+            ? new Date(
+                Number(match[1]),
+                Number(match[2]) - 1,
+                Number(match[3])
+            )
+            : new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+            return null;
+        }
+
+        date.setHours(0, 0, 0, 0);
+        return date;
+    }
+
+    // Calculate current and previous period values
+    orders.forEach(order => {
+        const orderDate = parseOrderDate(order.date);
+        if (!orderDate) return;
+
+        const day = days.find(item =>
+            item.date.getTime() === orderDate.getTime()
+        );
+
+        if (day) {
+            day.revenue += Number(order.total) || 0;
+            day.orders += 1;
+            return;
+        }
+
+        const previousDay = days.find(item =>
+            item.previousDate.getTime() === orderDate.getTime()
+        );
+
+        if (previousDay) {
+            previousDay.previousRevenue += Number(order.total) || 0;
+            previousDay.previousOrders += 1;
+        }
+    });
+
+
+    const hasOrders = days.some(day =>
+        day.orders > 0 || day.previousOrders > 0
+);
+
+    emptyMessage.hidden = hasOrders;
+    canvas.style.visibility = hasOrders ? "visible" : "hidden";
+
+    if (!hasOrders) return;
+
+    // Prepare a sharp canvas for the current screen size
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const ratio = window.devicePixelRatio || 1;
+
+    if (!width || !height) return;
+
+    canvas.width = width * ratio;
+    canvas.height = height * ratio;
+
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    ctx.clearRect(0, 0, width, height);
+
+    const left = 58;
+    const right = width - 42;
+    const top = 24;
+    const bottom = height - 38;
+    const chartWidth = right - left;
+    const chartHeight = bottom - top;
+
+    const maxRevenue = Math.max(
+    ...days.flatMap(day => [
+        day.revenue,
+        day.previousRevenue
+    ]),
+    1
+);
+
+const maxOrders = Math.max(
+    ...days.flatMap(day => [
+        day.orders,
+        day.previousOrders
+    ]),
+    1
+);
+
+    const money = value => value.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: 0
+    });
+
+    // Horizontal grid and vertical-axis labels
+    ctx.font = "11px Arial";
+    ctx.textBaseline = "middle";
+
+    for (let i = 0; i <= 4; i++) {
+        const y = top + (chartHeight / 4) * i;
+
+        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(left, y);
+        ctx.lineTo(right, y);
+        ctx.stroke();
+
+        const revenueValue = maxRevenue * (1 - i / 4);
+        const orderValue = Math.round(maxOrders * (1 - i / 4));
+
+        ctx.fillStyle = "#a1a1aa";
+        ctx.textAlign = "right";
+        ctx.fillText(money(revenueValue), left - 9, y);
+
+        ctx.textAlign = "left";
+        ctx.fillText(String(orderValue), right + 8, y);
+    }
+
+    // Calculate positions for each day
+    
+    // Calculate positions for both periods
+    const points = days.map((day, index) => ({
+        x: left + (
+            days.length === 1
+                ? chartWidth / 2
+                : (index / (days.length - 1)) * chartWidth
+        ),
+
+        revenueY: bottom - (
+            day.revenue / maxRevenue
+        ) * chartHeight,
+
+        ordersY: bottom - (
+            day.orders / maxOrders
+        ) * chartHeight,
+
+        previousRevenueY: bottom - (
+            day.previousRevenue / maxRevenue
+        ) * chartHeight,
+
+        previousOrdersY: bottom - (
+            day.previousOrders / maxOrders
+        ) * chartHeight,
+
+        date: day.date
+    }));
+
+
+    // Draw each line
+    function drawLine(key, color) {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.5;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+
+        points.forEach((point, index) => {
+            const y = point[key];
+
+            if (index === 0) {
+                ctx.moveTo(point.x, y);
+            } else {
+                ctx.lineTo(point.x, y);
+            }
+        });
+
+        ctx.stroke();
+
+        // Draw data points
+        points.forEach(point => {
+            ctx.beginPath();
+            ctx.arc(point.x, point[key], 3, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+        });
+    }
+
+    
+    // Previous period: dashed lines
+    ctx.save();
+    ctx.setLineDash([6, 5]);
+
+    drawLine("previousRevenueY", "#ffb36b");
+    drawLine("previousOrdersY", "#7dd3fc");
+
+    ctx.restore();
+
+    // Current period: solid lines
+    ctx.setLineDash([]);
+
+    drawLine("revenueY", "#ff7a18");
+    drawLine("ordersY", "#38bdf8");
+
+
+    // Date labels
+    ctx.fillStyle = "#a1a1aa";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+
+    const labelStep = Math.max(
+        1,
+        Math.ceil(days.length / 6)
+    );
+
+    points.forEach((point, index) => {
+        if (index % labelStep !== 0 && index !== points.length - 1) {
+            return;
+        }
+
+        const label = point.date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric"
+        });
+
+        ctx.fillText(label, point.x, bottom + 12);
+    });
+
+    
+    // ========================================
+    // INTERACTIVE CHART TOOLTIP
+    // ========================================
+
+    const tooltip = document.getElementById(
+        "analyticsChartTooltip"
+    );
+
+    if (!tooltip) return;
+
+    canvas.onmousemove = event => {
+        const rect = canvas.getBoundingClientRect();
+
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+
+        // Convert canvas coordinates to CSS pixels
+        const scaleX = width / rect.width;
+        const scaleY = height / rect.height;
+
+        const chartX = mouseX * scaleX;
+        const chartY = mouseY * scaleY;
+
+        // Find the closest day's point
+        let nearest = null;
+        let shortestDistance = Infinity;
+
+        points.forEach((point, index) => {
+            const revenueDistance = Math.hypot(
+                chartX - point.x,
+                chartY - point.revenueY
+            );
+
+            const ordersDistance = Math.hypot(
+                chartX - point.x,
+                chartY - point.ordersY
+            );
+
+            
+        const distances = [
+            Math.hypot(chartX - point.x, chartY - point.revenueY),
+            Math.hypot(chartX - point.x, chartY - point.ordersY),
+            Math.hypot(chartX - point.x, chartY - point.previousRevenueY),
+            Math.hypot(chartX - point.x, chartY - point.previousOrdersY)
+        ];
+
+        const distance = Math.min(...distances);
+
+        if (distance < shortestDistance) {
+            shortestDistance = distance;
+
+            nearest = {
+                point,
+                day: days[index]
+            };
+        }
+    });
+
+
+        if (!nearest || shortestDistance > 22) {
+            tooltip.hidden = true;
+            return;
+        }
+
+        
+        const dateLabel = nearest.day.date.toLocaleDateString(
+            "en-US",
+            {
+                weekday: "short",
+                month: "short",
+                day: "numeric"
+            }
+        );
+
+        const previousDateLabel =
+            nearest.day.previousDate.toLocaleDateString(
+                "en-US",
+                {
+                    month: "short",
+                    day: "numeric"
+                }
+            );
+
+        tooltip.innerHTML = `
+            <strong>${dateLabel}</strong>
+
+            <div class="tooltip-revenue">
+                Revenue: ${formatUSD(nearest.day.revenue)}
+            </div>
+
+            <div class="tooltip-orders">
+                Orders: ${nearest.day.orders}
+            </div>
+
+            <hr>
+
+            <strong>Previous period</strong>
+            <small>${previousDateLabel}</small>
+
+            <div class="tooltip-revenue">
+                Revenue: ${formatUSD(nearest.day.previousRevenue)}
+            </div>
+
+            <div class="tooltip-orders">
+                Orders: ${nearest.day.previousOrders}
+            </div>
+        `;
+
+
+        tooltip.hidden = false;
+
+        // Keep the tooltip inside the chart container
+        const container = canvas.parentElement;
+        const maxLeft = container.clientWidth - 190;
+        const maxTop = container.clientHeight - 100;
+
+        tooltip.style.left = `${
+            Math.max(8, Math.min(mouseX + 14, maxLeft))
+        }px`;
+
+        tooltip.style.top = `${
+            Math.max(8, Math.min(mouseY + 14, maxTop))
+        }px`;
+    };
+
+    canvas.onmouseleave = () => {
+        tooltip.hidden = true;
+    };
+
 }
 
 // ========================================
@@ -629,6 +1560,10 @@ updateStatusButton.addEventListener(
         renderRecentOrders();
 
         renderOrdersPage();
+
+        updateAnalyticsStats();
+        renderBestSellingProducts();
+        renderOrderInsights();
         
 
         // CLOSE MODAL
@@ -833,9 +1768,26 @@ const ordersNav =
     const viewAllOrders = document.getElementById("viewAllOrders")
 
 
+const analyticsNav =
+    document.getElementById("analyticsNav");
+
+const analyticsPeriodFilter =
+    document.getElementById("analyticsPeriodFilter");
+
+const settingsNav =
+    document.getElementById("settingsNav");
+
+const analyticsPage =
+    document.getElementById("analyticsPage");
+
+const settingsPage =
+    document.getElementById("settingsPage");
+
+
+
 const dashboardSections =
     document.querySelectorAll(
-        ".dashboard-welcome, .stats-grid, .dashboard-grid, .recent-orders"
+        ".dashboard-welcome, .dashboard.stats-grid, .dashboard-grid, .recent-orders"
     );
 
 
@@ -910,7 +1862,7 @@ if (productsNav) {
 
 }
 
-}
+
 if (viewAllOrders) {
         viewAllOrders.addEventListener(
             "click",
@@ -919,6 +1871,87 @@ if (viewAllOrders) {
             }
         )
     }
+
+
+
+    // ANALYTICS
+
+    if (analyticsPage) {
+        analyticsPage.style.display =
+            (page === "analytics")
+                
+                ? "block"
+                : "none";
+
+    if (page === "analytics") {
+        updateAnalyticsStats();
+        renderBestSellingProducts();
+        renderAnalyticsChart();
+        renderOrderInsights();
+    }
+    }
+
+    
+
+    
+
+    // SETTINGS
+
+    if (settingsPage) {
+        settingsPage.style.display =
+            page === "settings"
+                ? "block"
+                : "none";
+    }
+
+    
+
+    // ANALYTICS NAV
+
+    if (analyticsNav) {
+        analyticsNav.classList.toggle(
+            "active",
+            page === "analytics"
+        );
+    }
+
+    // SETTINGS NAV
+
+    if (settingsNav) {
+        settingsNav.classList.toggle(
+            "active",
+            page === "settings"
+        );
+    }
+
+}
+if (viewAllOrders) {
+    viewAllOrders.addEventListener("click", () => {
+        showPage("orders");
+    });
+}
+ // ANALYTICS NAV
+
+if (analyticsNav) {
+    analyticsNav.addEventListener(
+        "click",
+        () => {
+            showPage("analytics");
+        }
+    );
+}
+
+// SETTINGS NAV
+
+if (settingsNav) {
+    settingsNav.addEventListener(
+        "click",
+        () => {
+            showPage("settings");
+        }
+    );
+}
+
 
 // ========================================
 // DASHBOARD NAV
@@ -936,6 +1969,22 @@ if (dashboardNav) {
     );
 
 }
+
+
+
+if (analyticsPeriodFilter) {
+    analyticsPeriodFilter.addEventListener(
+        "change",
+        () => {
+            updateAnalyticsStats()
+            renderAnalyticsChart();
+            renderBestSellingProducts();
+            renderOrderInsights();
+        }
+    );
+}
+
+
 
 
 // ========================================
@@ -971,6 +2020,7 @@ if (productsNav) {
 }
 
 
+
 // ========================================
 // INITIAL PAGE
 // ========================================
@@ -997,6 +2047,8 @@ const cancelProductButton =
 
 const productForm =
     document.getElementById("productForm");
+
+
 
 
 
@@ -1117,17 +2169,11 @@ function saveProducts() {
 // FORMAT PRICE
 // ========================================
 
+
 function formatPrice(price) {
-
-    return Number(price).toLocaleString(
-        "pt-BR",
-        {
-            style: "currency",
-            currency: "BRL"
-        }
-    );
-
+    return formatUSD(price);
 }
+
 
 // ========================================
 // CATEGORY LABEL
