@@ -64,7 +64,7 @@ body {
     font-size: 18px;
     margin-top: 5px;
 }
-logo h1 {
+.logo h1 {
     font-size: 28px;
     font-weight: bold;
     letter-spacing: 2px;
@@ -117,23 +117,26 @@ logo h1 {
    HERO SECTION
 ========================= */
 .hero {
-    min-height: calc(100vh - 135px);
+    min-height: 620px;
 
     display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
 
-    gap: 60px;
+    gap: 50px;
 
-    padding: 70px 8%;
+    padding: 80px 9%;
+
     background-color: #f7f3eb;
+
     overflow: hidden;
 }
 
 /* HERO CONTENT */
 .hero-content {
-    max-width: 600px;
+    max-width: 550px;
+    text-align: left;
 }
-
 .hero-subtitle{
     display: inline-block;
     margin-bottom: 20px;
@@ -175,7 +178,7 @@ logo h1 {
     align-items: center;
     justify-content: center;
 
-    padding: 15x 30px;
+    padding: 15px 30px;
 
     background-color: #8f3f32;
     color: #fff;
@@ -277,15 +280,17 @@ logo h1 {
         overflow-x: auto;
         white-space: nowrap;
     }
-    .hero{
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 60px 7%;
-        text-align: center;
-    }
-    .hero.content{
-        margin: auto;
-    }
+ .hero {
+    grid-template-columns: 1fr;
+    gap: 35px;
+
+    padding: 60px 7%;
+
+    text-align: left;
+}
+   .hero-content {
+    margin: 0;
+}
     .hero h2{
         font-size: clamp(45px, 12vw, 70px);
         letter-spacing: -2px;
@@ -2218,4 +2223,539 @@ logo h1 {
     background-color: #181818;
     opacity: 1;
     color: #f5f5f5;
+}
+
+
+/* OPENING HOURS - NEW LAYOUT */
+
+.store-hours-section {
+    width: 100%;
+    padding: 22px 9%;
+
+    background-color: #eee7dc;
+    border-top: 1px solid #e3d8c9;
+    border-bottom: 1px solid #e3d8c9;
+}
+
+.store-hours-section .section-heading {
+    max-width: none;
+    margin: 0;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+
+    align-items: center;
+    gap: 25px;
+
+    text-align: left;
+}
+
+.store-hours-section .section-heading span {
+    margin: 0;
+
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.store-hours-section .section-heading h2 {
+    margin: 0;
+
+    font-size: 23px;
+    letter-spacing: -0.5px;
+}
+
+.store-hours-section .section-heading p {
+    margin: 0;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .store-hours-section {
+        padding: 20px 6%;
+    }
+
+    .store-hours-section .section-heading {
+        grid-template-columns: 1fr;
+        gap: 7px;
+
+        text-align: center;
+    }
+
+    .store-hours-section .section-heading h2 {
+        font-size: 21px;
+    }
+
+}
+/* FIX: PROMOTION BADGE POSITION */
+
+.pizza-image {
+    position: relative;
+}
+
+
+/* HEADER - REFINED DESIGN */
+
+.main-header {
+    height: 90px;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 45px;
+}
+
+/* HEADER BUTTONS */
+
+.menu-button,
+.theme-button {
+    width: 45px;
+    height: 45px;
+
+    padding: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+    border-radius: 50%;
+}
+
+/* LOGO */
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    line-height: 1;
+}
+
+.logo span {
+    display: inline-block;
+    margin: 0;
+    font-size: 25px;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo p {
+    display: none;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .main-header {
+        padding: 0 18px;
+    }
+
+    .logo {
+        gap: 5px;
+    }
+
+    .logo span {
+        font-size: 21px;
+    }
+
+    .logo h1 {
+        font-size: 22px;
+    }
+
+}
+
+
+/* =================================
+   KAEDE'S - SIDEBAR REDESIGN
+================================= */
+
+.side-menu {
+    width: 360px;
+    max-width: 88%;
+    height: 100vh;
+
+    padding: 28px 24px;
+
+    background: #fffdf8;
+    color: #29221e;
+
+    border-radius: 0 18px 18px 0;
+
+    box-shadow: 15px 0 50px rgba(35, 23, 15, 0.16);
+
+    overflow-y: auto;
+}
+
+/* HEADER */
+
+.side-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 38px;
+}
+
+.side-menu-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 21px;
+    color: #29221e;
+}
+
+.side-menu-logo span {
+    font-size: 25px;
+}
+
+.side-menu-logo strong {
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+/* CLOSE BUTTON */
+
+.side-menu-close {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f4efe6;
+    color: #713525;
+
+    border: none;
+    border-radius: 50%;
+
+    font-size: 18px;
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.side-menu-close:hover {
+    background: #8f3f32;
+    color: white;
+    transform: rotate(90deg);
+}
+
+/* USER GREETING */
+
+.user-greeting {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    padding: 20px;
+
+    margin-bottom: 32px;
+
+    background: #f4efe6;
+    border: 1px solid #e9dfd1;
+    border-radius: 14px;
+}
+
+.greeting-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fffdf8;
+    border-radius: 50%;
+
+    font-size: 23px;
+    flex-shrink: 0;
+}
+
+.user-greeting p {
+    margin: 0 0 5px;
+
+    color: #8a7c70;
+    font-size: 13px;
+}
+
+.user-greeting strong {
+    color: #29221e;
+    font-size: 17px;
+}
+
+/* NAVIGATION */
+
+.side-menu-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* IMPORTANT: STYLE THE LINKS */
+
+.side-menu-nav a {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    width: 100%;
+    padding: 13px 14px;
+
+    color: #45362e;
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    border-radius: 10px;
+
+    transition: 0.25s ease;
+}
+
+.side-menu-nav a span {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #f4efe6;
+    border-radius: 10px;
+
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.side-menu-nav a:hover {
+    background: #f4efe6;
+    color: #8f3f32;
+
+    transform: translateX(4px);
+}
+
+.side-menu-nav a:hover span {
+    background: #8f3f32;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .side-menu {
+        padding: 24px 20px;
+    }
+}
+
+
+/* =========================
+   KAEDE'S — HERO REDESIGN
+========================= */
+
+.hero {
+    min-height: 620px;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    padding: 80px 10%;
+    background-color: #f3eadb;
+}
+
+.hero-content {
+    max-width: 580px;
+    text-align: left;
+}
+
+.hero-subtitle {
+    color: #a34f32;
+    letter-spacing: 3px;
+    font-size: 14px;
+}
+
+.hero h2 {
+    color: #38251e;
+    font-size: clamp(48px, 5.5vw, 76px);
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 25px;
+}
+
+.hero p {
+    color: #69584d;
+    max-width: 460px;
+    line-height: 1.8;
+}
+
+.hero-button {
+    background-color: #a34f32;
+    border-radius: 30px;
+    padding: 16px 32px;
+    transition: 0.3s ease;
+}
+
+.hero-button:hover {
+    background-color: #793922;
+    transform: translateY(-3px);
+}
+
+.hero-image {
+    min-height: 430px;
+}
+
+.pizza-placeholder {
+    width: 320px;
+    height: 320px;
+    background-color: #fffaf1;
+    box-shadow: 0 20px 50px rgba(56, 37, 30, 0.15);
+}
+
+@media (max-width: 768px) {
+    .hero {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 55px 7%;
+    }
+
+    .hero-content {
+        margin: 0;
+    }
+
+    .hero p {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .hero-image {
+        min-height: 320px;
+    }
+
+    .pizza-placeholder {
+        width: 240px;
+        height: 240px;
+        font-size: 130px;
+    }
+}
+
+/* HERO - REAL PIZZA IMAGE */
+
+.hero-image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pizza-photo-frame {
+    position: relative;
+    z-index: 2;
+
+    width: 360px;
+    height: 360px;
+
+    border-radius: 50%;
+    overflow: hidden;
+
+    border: 12px solid #a34f32;
+    background-color: #fffaf1;
+
+    box-shadow: 0 20px 45px rgba(56, 37, 30, 0.18);
+}
+
+.pizza-photo {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 50%;
+    display: block;
+
+    transform: scale(1.12);
+    transition: transform 0.4s ease;
+}
+
+.pizza-photo-frame:hover .pizza-photo {
+    transform: scale(1.18);
+}
+
+/* HERO - DECORATIVE ELEMENTS */
+
+.hero-image {
+    position: relative;
+    overflow: visible;
+}
+
+/* Large white circle */
+.circle-one {
+    position: absolute;
+    width: 440px;
+    height: 440px;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    background: rgba(255, 255, 255, 0.45);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* Smaller decorative circle */
+.circle-two {
+    position: absolute;
+    width: 115px;
+    height: 115px;
+
+    top: 5%;
+    right: 5%;
+
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+/* Orange maple leaf */
+.hero-decoration {
+    position: absolute;
+    top: 8%;
+    right: 8%;
+
+    font-size: 48px;
+    z-index: 4;
+
+    filter: hue-rotate(20deg) saturate(1.3);
+    transform: rotate(15deg);
+}
+
+/* Keep the pizza above the circles */
+.pizza-photo-frame {
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .circle-one {
+        width: 320px;
+        height: 320px;
+    }
+
+    .circle-two {
+        width: 75px;
+        height: 75px;
+    }
+
+    .hero-decoration {
+        font-size: 36px;
+    }
 }

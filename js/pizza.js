@@ -1023,3 +1023,70 @@ const openinHours = {
     }
 
 };
+
+// ========================================
+// STORE SETTINGS
+// ========================================
+
+const STORE_SETTINGS_KEY = "kaedesStoreSettings";
+
+function loadPublicStoreSettings() {
+    const savedSettings = JSON.parse(
+        localStorage.getItem(STORE_SETTINGS_KEY)
+    ) || {};
+
+    const storeName =
+        savedSettings.name || "Kaede's Pizzaria";
+
+    const storeHours =
+        savedSettings.hours || "Opening hours not informed.";
+
+    const storeNameDisplay =
+        document.getElementById("storeNameDisplay");
+
+    const storeNameSuffix =
+        document.getElementById("storeNameSuffix");
+
+    const storeHoursDisplay =
+        document.getElementById("storeHoursDisplay");
+
+    // UPDATE STORE NAME
+
+    if (storeNameDisplay && storeNameSuffix) {
+        if (storeName === "Kaede's Pizzaria") {
+            storeNameDisplay.textContent = "Kaede's";
+            storeNameSuffix.textContent = "Pizzaria";
+            storeNameSuffix.style.display = "";
+        } else {
+            storeNameDisplay.textContent = storeName;
+            storeNameSuffix.style.display = "none";
+        }
+    }
+
+    // UPDATE PAGE TITLE
+
+    document.title = storeName;
+
+    // UPDATE OPENING HOURS
+
+    if (storeHoursDisplay) {
+        storeHoursDisplay.textContent =
+            storeHours;
+    }
+}
+
+// LOAD SETTINGS WHEN THE SCRIPT RUNS
+
+loadPublicStoreSettings();
+
+console.log(
+    "Elemento do horário:",
+    document.getElementById("storeHoursDisplay")
+);
+
+console.log(
+    "Configurações salvas:",
+    JSON.parse(
+        localStorage.getItem("kaedesStoreSettings")
+    )
+);

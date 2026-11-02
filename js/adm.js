@@ -2718,3 +2718,78 @@ if (addProductButton) {
 
 renderProducts();
 
+
+
+ // ========================================
+ // SETTINGS — STORE INFORMATION
+ // ========================================
+
+const STORE_SETTINGS_KEY = "kaedesStoreSettings";
+
+const storeSettingsForm = document.getElementById(
+    "storeSettingsForm"
+);
+
+const storeNameInput = document.getElementById(
+    "storeName"
+);
+
+const storeHoursInput = document.getElementById(
+    "storeHours"
+);
+
+
+// LOAD SAVED SETTINGS
+
+function loadStoreSettings() {
+    const savedSettings = JSON.parse(
+        localStorage.getItem(STORE_SETTINGS_KEY)
+    ) || {};
+
+    if (storeNameInput) {
+        storeNameInput.value =
+            savedSettings.name || "Kaede's Pizzaria";
+    }
+
+    if (storeHoursInput) {
+        storeHoursInput.value =
+            savedSettings.hours || "";
+    }
+}
+
+
+// SAVE SETTINGS
+
+if (storeSettingsForm) {
+    storeSettingsForm.addEventListener(
+        "submit",
+        function (event) {
+            event.preventDefault();
+
+            const name = storeNameInput.value.trim();
+            const hours = storeHoursInput.value.trim();
+
+            if (!name) {
+                alert("Please enter the store name.");
+                return;
+            }
+
+            const settings = {
+                name: name,
+                hours: hours
+            };
+
+            localStorage.setItem(
+                STORE_SETTINGS_KEY,
+                JSON.stringify(settings)
+            );
+
+            alert("Store settings saved successfully!");
+        }
+    );
+}
+
+
+// INITIALIZE SETTINGS
+
+loadStoreSettings();

@@ -40,7 +40,7 @@
                 Home
             </a>
 
-            <a href="#cart">
+            <a href="#openCartFromMenu">
                 <span>🛒</span>
                 My Cart
             </a>
@@ -50,10 +50,7 @@
                 Opening Hours
             </a>
 
-            <a href="#location">
-                <span>📍</span>
-                Location
-            </a>
+           
 
             <a href="#about">
                 <span>ℹ️</span>
@@ -69,9 +66,13 @@
 
         <div class="logo">
             <span>🍁</span>
-            <h1>Kaede's</h1>
-            <p>Pizzaria</p>
+            <h1 id="storeNameDisplay">Kaede's</h1>
+            <p id="storeNameSuffix">Pizzaria</p>
         </div>
+        <button class="cart-header-button" id="openCart">
+    🛒
+    <span id="cartCount">0</span>
+</button>
 
         <button class="theme-button">
             ☀️
@@ -86,38 +87,60 @@
 
        
     </nav>
-     <div>
-            <section class="hero">
-                <div class="hero-content">
-                    <span class="hero-subtitle">
-                        KAEDE'S PIZZARIA
-                    </span>
-                    <h2>
-                        Good Pizza.<br>
-                        Made with care.
-                    </h2>
-                    <p>
-                        Fresf ingreients, handcrafted flavorsm and a little piece of Kaede in every slice.
-                    </p>
+    
+<section class="store-hours-section" id="hours">
 
-                    <a href="#menu" class="hero-button">
-                        Order now
-                    </a>
-                </div>
-                <div class="hero-image">
+    <div class="section-heading">
 
-    <div class="hero-circle circle-one"></div>
-    <div class="hero-circle circle-two"></div>
+        <span>Come visit us</span>
 
-    <span class="hero-decoration">🍁</span>
+        <h2>Opening Hours</h2>
 
-    <div class="pizza-placeholder">
-        🍕
+        <p id="storeHoursDisplay">
+            Check our opening hours.
+        </p>
+
     </div>
 
+</section>
+     <div>
+          
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="hero-subtitle">
+            KAEDE'S PIZZARIA
+        </span>
+
+        <h2>
+            Good Pizza.<br>
+            Made with care.
+        </h2>
+
+        <p>
+            Fresh ingredients, handcrafted flavors,
+            and a little piece of Kaede in every slice.
+        </p>
+
+        <a href="#promotions" class="hero-button">
+            Order now
+        </a>
+
+    </div>
+
+   <div class="pizza-photo-frame">
+    <img
+        src="../images/hero-pizza.png"
+        alt="Freshly baked pepperoni pizza with melted cheese"
+        class="pizza-photo"
+    >
 </div>
-                
-            </section>
+
+</section>
+
+          
+            
 
             <section class="menu-section" id="promotions">
 
@@ -215,55 +238,79 @@
 
     </div>
             </section>
+            <!-- ABOUT US -->
+<section class="about-section" id="about">
+
+    <div class="about-container">
+
+        <div class="about-heading">
+            <span>OUR STORY</span>
+            <h2>More than just pizza.</h2>
+        </div>
+
+        <div class="about-content">
+            <p id="storeAboutDisplay">
+                Our story is being written. Come back soon!
+            </p>
+        </div>
+
+    </div>
+
+</section>
 
             <!-- CART SECTION -->
-             <section class="cart-section" id="cart">
+             <!-- CART PANEL -->
+<div class="cart-overlay" id="cartOverlay"></div>
 
-                <div class="section-heading">
-                    <span>Your order</span>
-                    <h2>My Cart</h2>
-                    <p>Review your selected items</p>
-                </div>
-                <div class="cart-container">
+<aside class="cart-panel" id="cartPanel">
 
-                    <!--Cart items-->
+    <div class="cart-panel-header">
 
-                    <div class="cart-items" id="cartItems">
+        <div>
+            <span>YOUR ORDER</span>
+            <h2>My Cart</h2>
+        </div>
 
-                        <div class="empty-cart">
-                            <span>🛒</span>
-                            <p>Your cart is empty.</p>
-                            <p>Add a pizza to start your order.</p>
-                        </div>
-                        
-                </div>
+        <button id="closeCart" class="cart-close-button">
+            ×
+        </button>
 
-                <!-- CART SUMMARY -->
-                 <div class="cart-summary">
-                    <div class="summary-row">
-                        <span>Subtotal</span>
-                        <strong id="cartSubtotal">$0.00</strong>
-                    </div>
+    </div>
 
-                    <div class="summary-row">
-                        <span>Delivery</span>
-                        <strong id="deliveryFee">$0.00</strong>
-                    </div>
+    <div class="cart-items" id="cartItems">
 
-                    <div class="summary-total">
-                        <span>Total</span>
-                        <strong id="cartTotal">$0.00</strong>
-                    </div>
+        <div class="empty-cart">
+            <span>🛒</span>
+            <p>Your cart is empty.</p>
+            <p>Add a pizza to start your order.</p>
+        </div>
 
-                    <button
-                    class="checkout-button"
-                    id="checkoutButton">
-                Checkout
-            </button>
-                </div>
+    </div>
 
-                </div>
-             </section>
+    <div class="cart-summary">
+
+        <div class="summary-row">
+            <span>Subtotal</span>
+            <strong id="cartSubtotal">$0.00</strong>
+        </div>
+
+        <div class="summary-row">
+            <span>Delivery</span>
+            <strong id="deliveryFee">$0.00</strong>
+        </div>
+
+        <div class="summary-total">
+            <span>Total</span>
+            <strong id="cartTotal">$0.00</strong>
+        </div>
+
+        <button class="checkout-button" id="checkoutButton">
+            Checkout
+        </button>
+
+    </div>
+
+</aside>
 
              <!-- CHECKOUT -->
 
@@ -674,13 +721,7 @@
     </span>
     </div>
 </div>
-
-<button class="back-menu-button"
-id="backToMenuButton"
->
-Back to menu
-</button>
-</div>
+y
 </div>
         </main>
 

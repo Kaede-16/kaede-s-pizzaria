@@ -495,18 +495,3 @@ orderConfirmationModal.addEventListener(
 );
 
 
-backToMenuButton.addEventListener(
-    "click",
-    () => {
-
-        orderConfirmationModal
-            .classList.remove("active");
-
-        document
-            .getElementById("promotions")
-            .scrollIntoView({
-                behavior: "smooth"
-            });
-
-    }
-);
