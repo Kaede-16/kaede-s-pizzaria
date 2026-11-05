@@ -209,12 +209,7 @@ body {
     justify-content: center;
     align-items: center;
 }
-.hero-image img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 45% 45% 10% 10%;
-}
+
 /* CÍRCULOS DECORATIVOS */
 .hero-circle{
     position: absolute;
@@ -2646,48 +2641,6 @@ body {
     }
 }
 
-/* HERO - REAL PIZZA IMAGE */
-
-.hero-image {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pizza-photo-frame {
-    position: relative;
-    z-index: 2;
-
-    width: 360px;
-    height: 360px;
-
-    border-radius: 50%;
-    overflow: hidden;
-
-    border: 12px solid #a34f32;
-    background-color: #fffaf1;
-
-    box-shadow: 0 20px 45px rgba(56, 37, 30, 0.18);
-}
-
-.pizza-photo {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-    object-position: center;
-
-    border-radius: 50%;
-    display: block;
-
-    transform: scale(1.12);
-    transition: transform 0.4s ease;
-}
-
-.pizza-photo-frame:hover .pizza-photo {
-    transform: scale(1.18);
-}
 
 /* HERO - DECORATIVE ELEMENTS */
 
@@ -2696,9 +2649,15 @@ body {
     overflow: visible;
 }
 
-/* Large white circle */
-.circle-one {
+/* Shared circle styling */
+.hero-circle {
     position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Main white circle */
+.circle-one {
     width: 440px;
     height: 440px;
 
@@ -2706,44 +2665,73 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 
-    background: rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
     z-index: 0;
 }
 
-/* Smaller decorative circle */
+/* Secondary white circle */
 .circle-two {
-    position: absolute;
     width: 115px;
     height: 115px;
+
+    top: 2%;
+    right: 2%;
+
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 1;
+}
+
+/* Maple leaf decoration */
+.hero-decoration {
+    position: absolute;
 
     top: 5%;
     right: 5%;
 
-    background: rgba(255, 255, 255, 0.65);
-    border-radius: 50%;
-    z-index: 1;
-}
-
-/* Orange maple leaf */
-.hero-decoration {
-    position: absolute;
-    top: 8%;
-    right: 8%;
-
     font-size: 48px;
     z-index: 4;
 
-    filter: hue-rotate(20deg) saturate(1.3);
+    filter: drop-shadow(0 4px 5px rgba(56, 37, 30, 0.15));
     transform: rotate(15deg);
+
+    pointer-events: none;
 }
 
-/* Keep the pizza above the circles */
+/* PIZZA PHOTO FRAME */
 .pizza-photo-frame {
     position: relative;
     z-index: 2;
+
+    width: 360px;
+    height: 360px;
+
+    border: 12px solid #a34f32;
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    background-color: #fffaf1;
+    box-shadow: 0 20px 45px rgba(56, 37, 30, 0.18);
 }
 
+/* PIZZA PHOTO */
+.pizza-photo {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+    object-position: center;
+
+    border-radius: 50%;
+
+    transition: transform 0.4s ease;
+}
+
+.pizza-photo-frame:hover .pizza-photo {
+    transform: scale(1.08);
+}
 @media (max-width: 768px) {
     .circle-one {
         width: 320px;
@@ -2758,4 +2746,8 @@ body {
     .hero-decoration {
         font-size: 36px;
     }
+    .pizza-photo-frame {
+    width: 280px;
+    height: 280px;
+}
 }
