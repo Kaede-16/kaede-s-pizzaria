@@ -65,6 +65,14 @@ function renderCart() {
 
     const cartTotal =
         document.getElementById("cartTotal");
+    // CART COUNTER
+
+const cartCount = document.getElementById("cartCount");
+
+cartCount.textContent = cart.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+);
 
 
     // Empty cart
@@ -495,3 +503,33 @@ orderConfirmationModal.addEventListener(
 );
 
 
+// ========================================
+// CART PANEL
+// ========================================
+
+const openCartButton = document.getElementById("openCart");
+const closeCartButton = document.getElementById("closeCart");
+const cartOverlay = document.getElementById("cartOverlay");
+const cartPanel = document.getElementById("cartPanel");
+
+// OPEN CART
+
+function openCart() {
+    cartPanel.classList.add("active");
+    cartOverlay.classList.add("active");
+}
+
+// CLOSE CART
+
+function closeCart() {
+    cartPanel.classList.remove("active");
+    cartOverlay.classList.remove("active");
+}
+
+// EVENTS
+
+openCartButton.addEventListener("click", openCart);
+
+closeCartButton.addEventListener("click", closeCart);
+
+cartOverlay.addEventListener("click", closeCart);

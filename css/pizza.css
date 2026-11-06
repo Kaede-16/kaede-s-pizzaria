@@ -10,75 +10,181 @@ body {
     background-color: #f7f3eb;
     color: #1d1d1d;
 }
-/* Main header styles */
+/* ========================================
+   MAIN HEADER
+======================================== */
 
 .main-header {
+    position: sticky;
+    top: 0px;
+    z-index: 1000;
     width: 100%;
-    height: 90px;
+    min-height: 90px;
 
     display: grid;
+
     grid-template-columns: 1fr auto 1fr;
 
-    padding: 0 35px;
+    align-items: center;
 
+    padding: 12px 35px;
 
     background-color: #fffdf8;
+
     border-bottom: 1px solid #ded8cc;
-    
-    text-align: center;
 }
 
-/* button styles */
 
-.menu-button, .theme-button {
-    width: 45px;
-    height: 45px;
+/* ========================================
+   MENU BUTTON
+======================================== */
 
-    background-color:transparent;
-    font-size: 22px;
+.menu-button {
+    justify-self: start;
+
+    width: 44px;
+    height: 44px;
+
     border: none;
     border-radius: 50%;
-    padding: 10px 20px;
+
+    background: transparent;
+
+    color: #1d1d1d;
+
+    font-size: 22px;
+
     cursor: pointer;
-    transition: background-color 0.3s ease;
+
+    transition: 0.25s ease;
 }
 
-.menu-button{
-    justify-self: start;
-}
-.theme-button{
-    justify-self: end;
+.menu-button:hover {
+    background: #eee8dc;
 }
 
-.menu-button:hover, .theme-button:hover {
-    background-color: #eee8dc;
-}
 
-/* LOGO styles */
+/* ========================================
+   LOGO
+======================================== */
+
 .logo {
+    justify-self: center;
+
     text-align: center;
+
     line-height: 1;
 }
-.logo span{
-    display: block;
-    font-size: 18px;
-    margin-top: 5px;
-}
-.logo h1 {
-    font-size: 28px;
-    font-weight: bold;
-    letter-spacing: 2px;
-}
-.logo p{
-    margin-top: 5px;
 
-    font-size: 14px;
-    letter-spacing: 5px;
-    text-transform: uppercase;
+.logo h1 {
+    color: #1d1d1d;
+
+    font-size: 27px;
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.logo p {
+    margin-top: 6px;
 
     color: #8f3f32;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    text-transform: uppercase;
 }
 
+
+/* ========================================
+   HEADER ACTIONS
+======================================== */
+
+.header-actions {
+    justify-self: end;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* ========================================
+   CART BUTTON
+======================================== */
+
+.cart-header-button,
+.theme-button {
+    position: relative;
+
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ded8cc;
+
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #1d1d1d;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.cart-header-button:hover,
+.theme-button:hover {
+    background: #eee8dc;
+
+    border-color: #cfc4b4;
+}
+
+
+/* ========================================
+   CART COUNT
+======================================== */
+
+.cart-header-button span {
+    position: absolute;
+
+    top: -4px;
+    right: -4px;
+
+    min-width: 18px;
+    height: 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 4px;
+
+    border-radius: 50%;
+
+    background: #8f3f32;
+
+    color: white;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
 /* =========================
    CATEGORY NAVIGATION
 ========================= */
@@ -93,8 +199,6 @@ body {
 
     background-color: #fffdf8;
     border-bottom: 1px solid #ded8cc;
-    position: sticky;
-    top: 0;
 
     z-index: 100;
 }
@@ -258,63 +362,32 @@ body {
 }
 /*RESPONSIVE DESIGN */
 @media (max-width: 768px){
-    .main-header{
-        height: 75px;
-        padding: 0 20px;
-    }
-    .logo h1{
-        font-size: 24px;
-    }
-    .logo p{
-        font-size: 12px;
-        letter-spacing: 3px;
-    }
-    .category-nav{
-        justify-content: flex-start;
-        gap: 25px;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
- .hero {
-    grid-template-columns: 1fr;
-    gap: 35px;
+    .main-header {
+    min-height: 75px;
 
-    padding: 60px 7%;
-
-    text-align: left;
+    padding: 10px 18px;
 }
-   .hero-content {
-    margin: 0;
-}
-    .hero h2{
-        font-size: clamp(45px, 12vw, 70px);
-        letter-spacing: -2px;
-    }
-    .hero p{
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .hero-image{
-        height: 400px;
-    }
-    .circle-one{
-        width: 30px;
-        height: 350px;
-    }
-    .circle-two{
-        width: 250px;
-        height: 250px;
-    }
-    .pizza-placeholder{
-        width: 220px;
-        height: 220px;
 
-        font-size: 120px;
-    }
-    .side-menu{
-        width: 85%;
-        max-width: 350px;
-    }
+.logo h1 {
+    font-size: 22px;
+}
+
+.logo p {
+    font-size: 10px;
+
+    letter-spacing: 3px;
+}
+
+.header-actions {
+    gap: 6px;
+}
+
+.menu-button,
+.cart-header-button,
+.theme-button {
+    width: 40px;
+    height: 40px;
+}
 }
 @media (max-width: 900px){
     .pizza-grid{
@@ -2750,4 +2823,398 @@ body {
     width: 280px;
     height: 280px;
 }
+}
+
+/* ========================================
+   KAEDE'S — CART DRAWER
+======================================== */
+
+.cart-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.5);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.3s ease;
+
+    z-index: 2999;
+}
+
+.cart-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* CART PANEL */
+
+.cart-panel {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    width: min(450px, 100%);
+    height: 100vh;
+    height: 100dvh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #fffdf8;
+
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.15);
+
+    transform: translateX(100%);
+    visibility: hidden;
+
+    transition:
+        transform 0.35s ease,
+        visibility 0.35s ease;
+
+    z-index: 3000;
+}
+
+.cart-panel.active {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+/* HEADER */
+
+.cart-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 25px;
+
+    border-bottom: 1px solid #e4ded3;
+}
+
+.cart-panel-header span {
+    color: #a34f32;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.cart-panel-header h2 {
+    margin-top: 5px;
+    font-size: 25px;
+    color: #38251e;
+}
+
+.cart-close-button {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #f4efe6;
+    color: #713525;
+
+    font-size: 25px;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.cart-close-button:hover {
+    background: #8f3f32;
+    color: white;
+}
+
+/* CART ITEMS */
+
+.cart-panel .cart-items {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 20px;
+}
+
+/* EMPTY CART */
+
+.cart-panel .empty-cart {
+    padding: 50px 15px;
+
+    background: transparent;
+    border: none;
+}
+
+/* SUMMARY */
+
+.cart-panel .cart-summary {
+    flex-shrink: 0;
+
+    padding: 25px;
+
+    background: #fffdf8;
+
+    border-top: 1px solid #e4ded3;
+    border-radius: 0;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .cart-panel {
+        width: 100%;
+    }
+}
+
+
+/* ========================================
+   SWEET PIZZAS — SECTION HEADING
+======================================== */
+
+.pizza-section-heading {
+    position: relative;
+
+    max-width: 1200px;
+    margin: 0 auto 35px;
+
+    padding-left: 22px;
+
+    text-align: left;
+}
+
+/* Vertical accent line */
+.pizza-section-heading::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 3px;
+
+    width: 3px;
+    height: 68px;
+
+    background-color: #a34f32;
+
+    border-radius: 5px;
+}
+
+/* Small subtitle */
+.pizza-section-heading span {
+    margin-bottom: 7px;
+
+    color: #a34f32;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 2.5px;
+}
+
+/* Main title */
+.pizza-section-heading h2 {
+    margin-bottom: 8px;
+
+    color: #29221e;
+
+    font-size: clamp(30px, 3.5vw, 42px);
+
+    letter-spacing: -1.5px;
+}
+
+/* Description */
+.pizza-section-heading p {
+    color: #71675e;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+
+    .pizza-section-heading {
+        padding-left: 17px;
+        margin-bottom: 28px;
+    }
+
+    .pizza-section-heading::before {
+        height: 60px;
+    }
+
+    .pizza-section-heading h2 {
+        font-size: 30px;
+    }
+
+}
+/* MORE SPACE BETWEEN MENU SECTIONS */
+
+.pizza-section-heading {
+    margin-top: 45px;
+}
+
+
+/* ABOUT US — HIDDEN UNTIL CLICK */
+
+#about {
+    display: none;
+    scroll-margin-top: 110px;
+}
+
+#about.active {
+    display: block;
+}
+
+/* ========================================
+   ABOUT US — KAEDE'S STORY
+======================================== */
+
+.about-section {
+    display: none;
+    padding: 90px 9%;
+    background: #f3eadb;
+    overflow: hidden;
+    scroll-margin-top: 100px;
+}
+
+.about-section.active {
+    display: block;
+}
+
+.about-container {
+    max-width: 1250px;
+    margin: 0 auto;
+}
+
+/* HEADING */
+
+.about-heading {
+    max-width: 850px;
+    margin: 0 auto 55px;
+    text-align: center;
+}
+
+.about-heading span {
+    display: block;
+    margin-bottom: 12px;
+
+    color: #a34f32;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+}
+
+.about-heading h2 {
+    margin-bottom: 18px;
+
+    color: #38251e;
+    font-size: clamp(35px, 5vw, 58px);
+    letter-spacing: -2px;
+}
+
+.about-heading p {
+    color: #69584d;
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+/* CONTENT */
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 55px;
+}
+
+/* IMAGE */
+
+.about-image {
+    width: 100%;
+    height: 390px;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* TEXT */
+
+.about-text {
+    padding-left: 35px;
+    border-left: 2px solid #a34f32;
+}
+
+.about-text p {
+    margin-bottom: 35px;
+
+    color: #51443b;
+    font-size: 18px;
+    line-height: 1.9;
+}
+
+/* BUTTON */
+
+.about-button {
+    display: inline-block;
+
+    padding: 15px 30px;
+
+    background: #a34f32;
+    color: white;
+
+    border-radius: 30px;
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    transition: 0.3s ease;
+}
+
+.about-button:hover {
+    background: #793922;
+    transform: translateY(-3px);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+    .about-section {
+        padding: 65px 7%;
+    }
+
+    .about-heading {
+        margin-bottom: 35px;
+    }
+
+    .about-heading p {
+        font-size: 15px;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .about-image {
+        height: 280px;
+    }
+
+    .about-text {
+        padding-left: 20px;
+    }
+
+    .about-text p {
+        font-size: 16px;
+    }
+
 }

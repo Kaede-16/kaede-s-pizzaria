@@ -169,7 +169,7 @@ function addSimpleProductToCart(productId) {
 
     addToCart(cartItem);
 
-    document.getElementById("cart").scrollIntoView({
+    document.getElementById("cartPainel").scrollIntoView({
         behavior: "smooth"
     });
 }
@@ -1090,3 +1090,32 @@ console.log(
         localStorage.getItem("kaedesStoreSettings")
     )
 );
+
+// ========================================
+// ABOUT US — SHOW ON CLICK
+// ========================================
+
+const aboutLink = document.querySelector(
+    '.side-menu-nav a[href="#about"]'
+);
+
+const aboutSection = document.getElementById("about");
+
+if (aboutLink && aboutSection) {
+
+    aboutLink.addEventListener("click", function(event) {
+
+        event.preventDefault();
+
+        // Show About Us
+        aboutSection.classList.add("active");
+
+        // Scroll to the section
+        aboutSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    });
+
+}
