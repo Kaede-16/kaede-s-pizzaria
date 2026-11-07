@@ -90,7 +90,7 @@
     </div>
 
 </header>
-    <nav class="category-nav">
+    <nav class="category-nav home-content">
         <a href="#promotions">Promotions</a>
         <a href="#savory-pizzas">Savory Pizzas</a>
         <a href="#sweet-pizzas">Sweet Pizzas</a>
@@ -100,8 +100,7 @@
        
     </nav>
     
-<section class="store-hours-section" id="hours">
-
+<section class="store-hours-section home-content" id="hours">
     <div class="section-heading">
 
         <span>Come visit us</span>
@@ -117,7 +116,7 @@
 </section>
      <div>
           
-<section class="hero">
+<section class="hero home-content">
 
     <div class="hero-content">
 
@@ -167,8 +166,7 @@
           
             
 
-            <section class="menu-section" id="promotions">
-
+<section class="menu-section home-content" id="promotions">
                 <div class="section-heading pizza-section-heading">
                     <span>Special offers</span>
                     <h2>Promotions</h2>
@@ -176,39 +174,14 @@
 
                 </div>
 
-                <div class="pizza-grid">
+                <div class="pizza-grid" id="promotionsGrid">
 
-                    <article class="pizza-card">
+    <!-- Active promotions will be generated here -->
 
-                        <div class="pizza-image">
-                            <span>🍕</span>
-
-                            <span class="promotion-badge">
-                                -20%
-                            </span>
-                        </div>
-                        <div class="pizza-info">
-
-                            <div class="pizza-title">
-                                <h3>Kaede's Special</h3>
-
-                                <span class="pizza-price"></span>
-                                <span class="pizza-price">
-                                    $12.90
-                                </span>
-                            </div>
-                            <p>
-                                Mozzarella, pepperoni, mushrooms, onions and our signature sauce.
-                            </p>
-                            <button class="add-button" onclick="openPizzaDetails(1)">Add +</button>
-                            
-                        </div>
-                    </article>
-
-                </div>
+</div>
             </section>
 
-            <section class="menu-section" id="savory-pizzas">
+            <section class="menu-section home-content" id="savory-pizzas">
                 <div class="section-heading pizza-section-heading">
                     <span>Our classics</span>
                     <h2>Savory Pizzas</h2>
@@ -223,7 +196,7 @@
 
             </section>
 
-            <section class="menu-section" id="sweet-pizzas">
+            <section class="menu-section home-content" id="sweet-pizzas">
                 <div class="section-heading pizza-section-heading">
                     <span>For your sweet side</span>
                     <h2>Sweet Pizzas</h2>
@@ -236,7 +209,7 @@
 
             </section>
 
-            <section class="menu-section" id="sides">
+            <section class="menu-section home-content" id="sides">
 
                 <div class="section-heading pizza-section-heading">
                     <span>Something extra</span>
@@ -250,7 +223,7 @@
 
             </section>
 
-            <section class="menu-section" id="drinks">
+            <section class="menu-section home-content" id="drinks">
                 <div class="section-heading pizza-section-heading">
         <span>Stay refreshed</span>
         <h2>Drinks</h2>
@@ -317,7 +290,7 @@
              <!-- CART PANEL -->
 <div class="cart-overlay" id="cartOverlay"></div>
 
-<aside class="cart-panel" id="cartPanel">
+<aside class="cart-panel" id="cartPainel">
 
     <div class="cart-panel-header">
 
@@ -464,7 +437,7 @@
                                     <input
                                     type="radio"
                                     name="paymentMethod"
-                                    value="PIX"
+                                    value="PIX">
                                     <span>📱</span>
                                 </label>
                                 <label class="payment-option">
@@ -695,6 +668,7 @@
                 style="display: none;"
                 >
                 Add Another Pizza
+            </button>
         </div>
 
     </div>
@@ -776,7 +750,7 @@
     </span>
     </div>
 </div>
-y
+
 </div>
         </main>
 

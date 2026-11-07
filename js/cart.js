@@ -124,6 +124,11 @@ cartCount.textContent = cart.reduce(
                     <h3>
                         ${item.pizza}
                     </h3>
+                    ${item.isPromotion ? `
+    <span class="cart-promotion-label">
+        Special Offer
+    </span>
+` : ""}
 
                     <div class="cart-item-type">
                         ${item.type}
@@ -510,19 +515,19 @@ orderConfirmationModal.addEventListener(
 const openCartButton = document.getElementById("openCart");
 const closeCartButton = document.getElementById("closeCart");
 const cartOverlay = document.getElementById("cartOverlay");
-const cartPanel = document.getElementById("cartPanel");
+const cartPainel = document.getElementById("cartPainel");
 
 // OPEN CART
 
 function openCart() {
-    cartPanel.classList.add("active");
+    cartPainel.classList.add("active");
     cartOverlay.classList.add("active");
 }
 
 // CLOSE CART
 
 function closeCart() {
-    cartPanel.classList.remove("active");
+    cartPainel.classList.remove("active");
     cartOverlay.classList.remove("active");
 }
 

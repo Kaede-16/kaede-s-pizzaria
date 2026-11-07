@@ -317,3 +317,117 @@
     border-radius: 8px;
     display: block;
 }
+
+/* ========================================
+   KAEDE'S — CHECKOUT THEME
+======================================== */
+
+/* LIGHT MODE — DEFAULT */
+
+.checkout-modal,
+.confirmation-modal {
+    background: #fffdf8;
+    color: #29221e;
+}
+
+/* Confirmation modal has a more specific rule
+   in the main CSS, so we override it here. */
+
+.modal-overlay.active .confirmation-modal {
+    background-color: #fffdf8;
+    color: #29221e;
+}
+
+/* INPUTS */
+
+.checkout-field input {
+    background: #fffaf1;
+    color: #29221e;
+    border-color: rgba(41, 34, 30, 0.18);
+}
+
+.checkout-field input::placeholder {
+    color: rgba(41, 34, 30, 0.45);
+}
+
+/* PAYMENT OPTIONS */
+
+.payment-option {
+    background: #fffaf1;
+    color: #29221e;
+    border-color: rgba(41, 34, 30, 0.18);
+}
+
+.payment-option:hover {
+    background: #f3eadb;
+}
+
+/* SUMMARY AND INFORMATION */
+
+.order-number,
+.confirmation-payment {
+    background: #f3eadb;
+}
+
+.checkout-summary,
+.checkout-summary-total,
+.confirmation-summary,
+.confirmation-total,
+.confirmation-item {
+    border-color: rgba(41, 34, 30, 0.15);
+}
+
+
+/* ========================================
+   DARK MODE
+======================================== */
+
+body.dark-theme .checkout-modal,
+body.dark-theme .confirmation-modal {
+    background: #211d19;
+    color: #f5eee5;
+}
+
+body.dark-theme .modal-overlay.active .confirmation-modal {
+    background-color: #211d19;
+    color: #f5eee5;
+}
+
+/* INPUTS */
+
+body.dark-theme .checkout-field input {
+    background: #29221d;
+    color: #f5eee5;
+    border-color: #51443b;
+}
+
+body.dark-theme .checkout-field input::placeholder {
+    color: #a99a8d;
+}
+
+/* PAYMENT OPTIONS */
+
+body.dark-theme .payment-option {
+    background: #29221d;
+    color: #f5eee5;
+    border-color: #51443b;
+}
+
+body.dark-theme .payment-option:hover {
+    background: #39312b;
+}
+
+/* SUMMARY AND INFORMATION */
+
+body.dark-theme .order-number,
+body.dark-theme .confirmation-payment {
+    background: #302821;
+}
+
+body.dark-theme .checkout-summary,
+body.dark-theme .checkout-summary-total,
+body.dark-theme .confirmation-summary,
+body.dark-theme .confirmation-total,
+body.dark-theme .confirmation-item {
+    border-color: rgba(245, 238, 229, 0.14);
+}

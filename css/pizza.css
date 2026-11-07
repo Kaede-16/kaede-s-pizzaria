@@ -2959,7 +2959,17 @@ body {
     border-top: 1px solid #e4ded3;
     border-radius: 0;
 }
-
+.cart-promotion-label {
+    display: inline-block;
+    width: fit-content;
+    margin-top: 5px;
+    padding: 4px 8px;
+    border-radius: 12px;
+    background: #a64b36;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
 /* MOBILE */
 
 @media (max-width: 600px) {
@@ -3058,21 +3068,27 @@ body {
 
 /* ABOUT US — HIDDEN UNTIL CLICK */
 
+/* ========================================
+   HOME AND ABOUT NAVIGATION
+======================================== */
+
 #about {
     display: none;
-    scroll-margin-top: 110px;
 }
 
-#about.active {
+body.about-view .home-content {
+    display: none;
+}
+
+body.about-view #about {
     display: block;
 }
-
 /* ========================================
    ABOUT US — KAEDE'S STORY
 ======================================== */
 
 .about-section {
-    display: none;
+    display: block;
     padding: 90px 9%;
     background: #f3eadb;
     overflow: hidden;
@@ -3217,4 +3233,234 @@ body {
         font-size: 16px;
     }
 
+}
+
+/* ========================================
+   KAEDE'S — DARK MODE
+======================================== */
+
+body.dark-theme {
+    background: #171513;
+    color: #f5eee5;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* HEADER */
+
+body.dark-theme .main-header {
+    background: #211d19;
+    border-color: #39312b;
+}
+
+body.dark-theme .logo h1,
+body.dark-theme .menu-button {
+    color: #f5eee5;
+}
+
+body.dark-theme .category-nav {
+    background: #211d19;
+    border-color: #39312b;
+}
+
+body.dark-theme .category-nav a {
+    color: #f5eee5;
+}
+
+body.dark-theme .category-nav a:hover {
+    background: #a34f32;
+}
+
+/* HEADER BUTTONS */
+
+body.dark-theme .theme-button,
+body.dark-theme .cart-header-button {
+    color: #f5eee5;
+    border-color: #51443b;
+}
+
+body.dark-theme .theme-button:hover,
+body.dark-theme .cart-header-button:hover {
+    background: #39312b;
+}
+
+/* HERO */
+
+body.dark-theme .hero {
+    background: #29221d;
+}
+
+body.dark-theme .hero h2 {
+    color: #f5eee5;
+}
+
+body.dark-theme .hero p {
+    color: #c5b7aa;
+}
+
+body.dark-theme .hero-circle {
+    background-color: #47352b;
+}
+
+body.dark-theme .circle-two {
+    background-color: transparent;
+    border-color: #a34f32;
+}
+
+body.dark-theme .pizza-placeholder {
+    background: #211d19;
+}
+
+/* OPENING HOURS */
+
+body.dark-theme .store-hours-section {
+    background: #211d19;
+    border-color: #39312b;
+}
+
+/* MENU HEADINGS */
+
+body.dark-theme .section-heading h2,
+body.dark-theme .pizza-section-heading h2 {
+    color: #f5eee5;
+}
+
+body.dark-theme .section-heading p,
+body.dark-theme .pizza-section-heading p {
+    color: #b9aa9d;
+}
+
+/* PIZZA CARDS */
+
+body.dark-theme .pizza-card {
+    background: #211d19;
+    border-color: #39312b;
+}
+
+body.dark-theme .pizza-title h3 {
+    color: #f5eee5;
+}
+
+body.dark-theme .pizza-info p {
+    color: #b9aa9d;
+}
+
+/* SIDE MENU */
+
+body.dark-theme .side-menu {
+    background: #211d19;
+    color: #f5eee5;
+}
+
+body.dark-theme .side-menu-logo,
+body.dark-theme .user-greeting strong {
+    color: #f5eee5;
+}
+
+body.dark-theme .user-greeting {
+    background: #302821;
+    border-color: #45372e;
+}
+
+body.dark-theme .greeting-icon,
+body.dark-theme .side-menu-nav a span {
+    background: #39312b;
+}
+
+body.dark-theme .side-menu-nav a {
+    color: #e8ded3;
+}
+
+body.dark-theme .side-menu-nav a:hover {
+    background: #39312b;
+    color: #d58a68;
+}
+
+/* CART DRAWER */
+
+body.dark-theme .cart-panel {
+    background: #211d19;
+    color: #f5eee5;
+}
+
+body.dark-theme .cart-panel-header {
+    border-color: #39312b;
+}
+
+body.dark-theme .cart-panel-header h2 {
+    color: #f5eee5;
+}
+
+body.dark-theme .cart-panel .cart-summary {
+    background: #211d19;
+    border-color: #39312b;
+}
+
+body.dark-theme .cart-item,
+body.dark-theme .empty-cart {
+    background: #29221d;
+    border-color: #39312b;
+}
+
+body.dark-theme .cart-item-info h3,
+body.dark-theme .empty-cart h3 {
+    color: #f5eee5;
+}
+
+body.dark-theme .cart-item-flavors,
+body.dark-theme .empty-cart p {
+    color: #b9aa9d;
+}
+
+/* ABOUT US */
+
+body.dark-theme .about-section {
+    background: #29221d;
+}
+
+body.dark-theme .about-heading h2 {
+    color: #f5eee5;
+}
+
+body.dark-theme .about-heading p,
+body.dark-theme .about-text p {
+    color: #c5b7aa;
+}
+/* ========================================
+   PROMOTIONS
+======================================== */
+
+.promotion-prices {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+}
+
+.original-price {
+    color: #999;
+    font-size: 0.85rem;
+    text-decoration: line-through;
+}
+
+.promotion-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: #a64b36;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.pizza-image {
+    position: relative;
+}
+
+.empty-promotions {
+    color: #999;
+    text-align: center;
+    padding: 30px 0;
 }

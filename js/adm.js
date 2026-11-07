@@ -1449,15 +1449,17 @@ detailsStatusSelect.value =
 
                 <div>
 
-                    <strong>
-                        ${item.pizza}
-                    </strong>
+    <strong>
+        ${item.pizza || item.name || "Product"}
+    </strong>
 
-                    <span>
-                        ${item.flavors.join(" + ")}
-                    </span>
+    ${
+        Array.isArray(item.flavors) && item.flavors.length > 0
+            ? `<span>${item.flavors.join(" + ")}</span>`
+            : ""
+    }
 
-                </div>
+</div>
 
 
                 <div>
@@ -1783,7 +1785,11 @@ const analyticsPage =
 const settingsPage =
     document.getElementById("settingsPage");
 
+const promotionsNav =
+    document.getElementById("promotionsNav");
 
+const promotionsPage =
+    document.getElementById("promotionsPage");
 
 const dashboardSections =
     document.querySelectorAll(
@@ -1863,15 +1869,6 @@ if (productsNav) {
 }
 
 
-if (viewAllOrders) {
-        viewAllOrders.addEventListener(
-            "click",
-            () => {
-                showPage("orders")
-            }
-        )
-    }
-
 
 
     // ANALYTICS
@@ -1923,6 +1920,25 @@ if (viewAllOrders) {
             page === "settings"
         );
     }
+    // PROMOTIONS
+
+if (promotionsPage) {
+
+    promotionsPage.style.display =
+        page === "promotions"
+            ? "block"
+            : "none";
+
+}
+
+if (promotionsNav) {
+
+    promotionsNav.classList.toggle(
+        "active",
+        page === "promotions"
+    );
+
+}
 
 }
 if (viewAllOrders) {
@@ -1940,7 +1956,21 @@ if (analyticsNav) {
         }
     );
 }
+// ========================================
+// PROMOTIONS NAV
+// ========================================
 
+if (promotionsNav) {
+
+    promotionsNav.addEventListener(
+        "click",
+        () => {
+            showPage("promotions");
+            renderPromotions();
+        }
+    );
+
+}
 // SETTINGS NAV
 
 if (settingsNav) {
@@ -2115,6 +2145,30 @@ if (productModal) {
 
 const PRODUCTS_STORAGE_KEY = "kaedesProducts";
 
+// ========================================
+// PROMOTIONS SYSTEM
+// ========================================
+
+const PROMOTIONS_STORAGE_KEY = "kaedesPromotions";
+
+let promotions =
+    JSON.parse(
+        localStorage.getItem(PROMOTIONS_STORAGE_KEY)
+    ) || [];
+
+let editingPromotionId = null;
+
+
+// SAVE PROMOTIONS
+
+function savePromotions() {
+
+    localStorage.setItem(
+        PROMOTIONS_STORAGE_KEY,
+        JSON.stringify(promotions)
+    );
+
+}
 // ========================================
 // PRODUCT ELEMENTS
 // ========================================
@@ -2402,7 +2456,7 @@ function openAddProductModal() {
 // OPEN EDIT PRODUCT MODAL
 // ========================================
 
-function editProduct(productId) {
+function editProduct(productId, promotionalPrice = null) {
 
     const product =
         products.find(
@@ -2482,6 +2536,15 @@ function deleteProduct(productId) {
     if (!confirmed) {
         return;
     }
+            // REMOVE PROMOTIONS LINKED TO THIS PRODUCT
+
+promotions =
+    promotions.filter(
+        promotion =>
+            promotion.productId !== productId
+    );
+
+savePromotions();
 
 
     products =
@@ -2494,6 +2557,7 @@ function deleteProduct(productId) {
     saveProducts();
 
     renderProducts();
+    renderPromotions();
 
 }
 
@@ -2658,6 +2722,8 @@ if (productForm) {
 
             renderProducts();
 
+            renderPromotions();
+
 
             // ========================================
             // CLOSE MODAL
@@ -2718,7 +2784,415 @@ if (addProductButton) {
 
 renderProducts();
 
+// ========================================
+// PROMOTIONS — ELEMENTS
+// ========================================
 
+const promotionsGrid =
+    document.getElementById("promotionsGrid");
+
+const addPromotionButton =
+    document.getElementById("addPromotionButton");
+
+const promotionModal =
+    document.getElementById("promotionModal");
+
+const closePromotionModal =
+    document.getElementById("closePromotionModal");
+
+const cancelPromotionButton =
+    document.getElementById("cancelPromotionButton");
+
+const promotionForm =
+    document.getElementById("promotionForm");
+
+const promotionProduct =
+    document.getElementById("promotionProduct");
+
+const promotionPrice =
+    document.getElementById("promotionPrice");
+
+const promotionStatus =
+    document.getElementById("promotionStatus");
+
+const promotionModalTitle =
+    document.getElementById("promotionModalTitle");
+
+
+// ========================================
+// RENDER PROMOTIONS
+// ========================================
+
+function renderPromotions() {
+
+    if (!promotionsGrid) return;
+
+    // Keep only promotions whose products still exist
+    promotions = promotions.filter(promotion =>
+        products.some(
+            product => product.id === promotion.productId
+        )
+    );
+
+    savePromotions();
+
+    if (promotions.length === 0) {
+
+        promotionsGrid.innerHTML = `
+            <div class="products-empty">
+
+                <div class="products-empty-icon">
+                    🏷️
+                </div>
+
+                <h3>No promotions yet</h3>
+
+                <p>
+                    Create your first special offer.
+                </p>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    promotionsGrid.innerHTML = promotions
+        .map(promotion => {
+
+            const product = products.find(
+                item => item.id === promotion.productId
+            );
+
+            if (!product) return "";
+
+            const discount = Math.round(
+                (1 - promotion.promotionalPrice / product.price) * 100
+            );
+
+            return `
+                <article class="product-card">
+
+                    <div class="product-card-image">
+
+                        <img
+                            src="${product.image}"
+                            alt="${product.name}"
+                        >
+
+                        <span class="product-category">
+                            ${promotion.active ? "Active" : "Inactive"}
+                        </span>
+
+                    </div>
+
+                    <div class="product-card-content">
+
+                        <div class="product-card-heading">
+                            <h3>${product.name}</h3>
+                            <strong>${formatPrice(promotion.promotionalPrice)}</strong>
+                        </div>
+
+                        <p class="product-card-description">
+                            Original price:
+                            <s>${formatPrice(product.price)}</s>
+                            · ${discount}% off
+                        </p>
+
+                        <div class="product-card-footer">
+
+                            <span class="product-id">
+                                ${promotion.active ? "Active offer" : "Inactive offer"}
+                            </span>
+
+                            <div class="product-card-actions">
+
+                                <button
+                                    type="button"
+                                    class="product-edit-button"
+                                    onclick="editPromotion('${promotion.id}')"
+                                >
+                                    Edit
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="product-delete-button"
+                                    onclick="deletePromotion('${promotion.id}')"
+                                >
+                                    Delete
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+            `;
+        })
+        .join("");
+}
+
+
+// ========================================
+// POPULATE PRODUCT SELECT
+// ========================================
+
+function populatePromotionProducts(selectedProductId = "") {
+
+    if (!promotionProduct) return;
+
+    promotionProduct.innerHTML = `
+        <option value="">Choose a product</option>
+    `;
+
+    products.forEach(product => {
+
+        const option = document.createElement("option");
+
+        option.value = product.id;
+        option.textContent = product.name;
+
+        if (product.id === selectedProductId) {
+            option.selected = true;
+        }
+
+        promotionProduct.appendChild(option);
+
+    });
+
+}
+
+
+// ========================================
+// OPEN PROMOTION MODAL
+// ========================================
+
+function openPromotionModal(promotionId = null) {
+
+    editingPromotionId = promotionId;
+
+    promotionForm.reset();
+
+    populatePromotionProducts();
+
+    if (promotionId) {
+
+        const promotion = promotions.find(
+            item => item.id === promotionId
+        );
+
+        if (!promotion) return;
+
+        promotionModalTitle.textContent = "Edit Promotion";
+
+        promotionProduct.value = promotion.productId;
+        promotionPrice.value = promotion.promotionalPrice;
+        promotionStatus.value = String(promotion.active);
+
+    } else {
+
+        promotionModalTitle.textContent = "Add Promotion";
+
+    }
+
+    promotionModal.classList.add("active");
+
+}
+
+
+// ========================================
+// EDIT PROMOTION
+// ========================================
+
+function editPromotion(promotionId) {
+
+    openPromotionModal(promotionId);
+
+}
+
+
+// ========================================
+// CLOSE PROMOTION MODAL
+// ========================================
+
+function closePromotionModalWindow() {
+
+    promotionModal.classList.remove("active");
+
+    promotionForm.reset();
+
+    editingPromotionId = null;
+
+}
+
+
+if (closePromotionModal) {
+
+    closePromotionModal.addEventListener(
+        "click",
+        closePromotionModalWindow
+    );
+
+}
+
+if (cancelPromotionButton) {
+
+    cancelPromotionButton.addEventListener(
+        "click",
+        closePromotionModalWindow
+    );
+
+}
+
+if (promotionModal) {
+
+    promotionModal.addEventListener(
+        "click",
+        event => {
+
+            if (event.target === promotionModal) {
+                closePromotionModalWindow();
+            }
+
+        }
+    );
+
+}
+
+
+// ========================================
+// ADD PROMOTION BUTTON
+// ========================================
+
+if (addPromotionButton) {
+
+    addPromotionButton.addEventListener(
+        "click",
+        () => openPromotionModal()
+    );
+
+}
+
+
+// ========================================
+// SAVE PROMOTION
+// ========================================
+
+if (promotionForm) {
+
+    promotionForm.addEventListener(
+        "submit",
+        event => {
+
+            event.preventDefault();
+
+            const productId = promotionProduct.value;
+            const price = Number(promotionPrice.value);
+            const active = promotionStatus.value === "true";
+
+            const product = products.find(
+                item => item.id === productId
+            );
+
+            if (!product) {
+                alert("Please select a valid product.");
+                return;
+            }
+
+            if (!Number.isFinite(price) || price <= 0) {
+                alert("Please enter a valid promotional price.");
+                return;
+            }
+
+            if (price >= Number(product.price)) {
+                alert("The promotional price must be lower than the original price.");
+                return;
+            }
+
+            const duplicate = promotions.some(
+                promotion =>
+                    promotion.productId === productId &&
+                    promotion.id !== editingPromotionId
+            );
+
+            if (duplicate) {
+                alert("This product already has a promotion.");
+                return;
+            }
+
+            if (editingPromotionId) {
+
+                const promotion = promotions.find(
+                    item => item.id === editingPromotionId
+                );
+
+                if (!promotion) return;
+
+                promotion.productId = productId;
+                promotion.promotionalPrice = price;
+                promotion.active = active;
+
+            } else {
+
+                promotions.push({
+
+                    id: `PROMO-${Date.now()}`,
+
+                    productId: productId,
+
+                    promotionalPrice: price,
+
+                    active: active,
+
+                    createdAt: new Date().toISOString()
+
+                });
+
+            }
+
+            savePromotions();
+
+            renderPromotions();
+
+            closePromotionModalWindow();
+
+        }
+    );
+
+}
+
+
+// ========================================
+// DELETE PROMOTION
+// ========================================
+
+function deletePromotion(promotionId) {
+
+    const confirmed = confirm(
+        "Are you sure you want to delete this promotion?"
+    );
+
+    if (!confirmed) return;
+
+    promotions = promotions.filter(
+        promotion => promotion.id !== promotionId
+    );
+
+    savePromotions();
+
+    renderPromotions();
+
+}
+
+
+// ========================================
+// INITIAL RENDER
+// ========================================
+
+renderPromotions();
 
  // ========================================
  // SETTINGS — STORE INFORMATION

@@ -40,7 +40,7 @@ function createPizzaCard(pizza) {
     const buttonAction = isSimpleProduct
         ? `addSimpleProductToCart('${pizza.id}')`
         : `openPizzaDetails('${pizza.id}')`;
-        
+
 
     return `
         <article class="pizza-card">
@@ -80,7 +80,7 @@ function createPizzaCard(pizza) {
     `;
 }
 
-function renderPizzas(){
+function renderPizzas() {
 
     const savoryGrid = document.querySelector(
         "#savory-pizzas .pizza-grid"
@@ -114,28 +114,139 @@ function renderPizzas(){
     );
 
     savoryGrid.innerHTML =
-       savoryPizzas
-          .map(createPizzaCard)
-          .join("");
+        savoryPizzas
+            .map(createPizzaCard)
+            .join("");
 
     sweetGrid.innerHTML =
-    sweetPizzas
-        .map(createPizzaCard)
-        .join("");
+        sweetPizzas
+            .map(createPizzaCard)
+            .join("");
 
     if (sidesGrid) {
         sidesGrid.innerHTML = sides.map(createPizzaCard).join("");
     }
 
     if (drinksGrid) {
-        drinksGrid.innerHTML = drinks.map(createPizzaCard).join("");    
+        drinksGrid.innerHTML = drinks.map(createPizzaCard).join("");
     }
 }
 
 renderPizzas();
 
+// ========================================
+// PROMOTIONS — PUBLIC MENU
+// ========================================
 
-function addSimpleProductToCart(productId) {
+const PROMOTIONS_STORAGE_KEY = "kaedesPromotions";
+
+function renderPromotions() {
+
+    const promotionsGrid = document.getElementById("promotionsGrid");
+
+    if (!promotionsGrid) return;
+
+    const promotions =
+        JSON.parse(
+            localStorage.getItem(PROMOTIONS_STORAGE_KEY)
+        ) || [];
+
+    const activePromotions = promotions.filter(
+        promotion => promotion.active === true
+    );
+
+    const promotionCards = activePromotions
+        .map(promotion => {
+
+            const product = pizzas.find(
+                pizza =>
+                    String(pizza.id) === String(promotion.productId)
+            );
+
+            // Ignore promotions whose products no longer exist
+            if (!product) return "";
+
+            const promotionalPrice =
+                Number(promotion.promotionalPrice);
+
+            if (
+                !Number.isFinite(promotionalPrice) ||
+                promotionalPrice <= 0
+            ) {
+                return "";
+            }
+
+            const isSimpleProduct =
+                ["drinks", "sides"].includes(product.category);
+
+            const buttonAction = isSimpleProduct
+                ? `addSimpleProductToCart(${JSON.stringify(product.id)}, ${promotionalPrice})`
+                : `openPizzaDetails(${JSON.stringify(product.id)}, ${promotionalPrice})`;
+
+                console.log("Promotion button:", buttonAction);
+console.log("Product ID:", product.id);
+console.log("Promotional price:", promotionalPrice);
+
+            return `
+                <article class="pizza-card promotion-card">
+
+                    <div class="pizza-image">
+
+                        ${getPizzaImage(product.image, product.name)}
+
+                        <span class="promotion-badge">
+                            SPECIAL OFFER
+                        </span>
+
+                    </div>
+
+                    <div class="pizza-info">
+
+                        <div class="pizza-title">
+
+                            <h3>${product.name}</h3>
+
+                            <div class="promotion-prices">
+
+                                <span class="original-price">
+                                    R$ ${Number(product.price).toFixed(2)}
+                                </span>
+
+                                <span class="pizza-price">
+                                    R$ ${promotionalPrice.toFixed(2)}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <p>${product.description}</p>
+
+                        <button
+                            class="add-button"
+                            onclick='${buttonAction}'
+                        >
+                            Add +
+                        </button>
+
+                    </div>
+
+                </article>
+            `;
+
+        })
+        .filter(card => card !== "")
+        .join("");
+
+    promotionsGrid.innerHTML = promotionCards ||
+        `<p class="empty-promotions">
+            No promotions available right now.
+        </p>`;
+}
+
+renderPromotions();
+
+function addSimpleProductToCart(productId, promotionalPrice = null) {
 
     const product = pizzas.find(
         item => String(item.id) === String(productId)
@@ -151,7 +262,10 @@ function addSimpleProductToCart(productId) {
         return;
     }
 
-    const unitPrice = product.price;
+    const unitPrice =
+        promotionalPrice !== null
+            ? Number(promotionalPrice)
+            : product.price;
 
     const cartItem = {
         id: Date.now() + Math.random(),
@@ -164,14 +278,13 @@ function addSimpleProductToCart(productId) {
         notes: "",
         crust: "",
         unitPrice: unitPrice,
-        total: unitPrice
+        total: unitPrice,
+        isPromotion: promotionalPrice !== null
     };
 
     addToCart(cartItem);
 
-    document.getElementById("cartPainel").scrollIntoView({
-        behavior: "smooth"
-    });
+    openCart();
 }
 
 
@@ -186,7 +299,7 @@ const closeMenu = document.getElementById('closeMenu');
 const openMenu = document.getElementById('openMenu');
 
 
-function openSideMenu(){
+function openSideMenu() {
 
     sideMenu.classList.add("active");
 
@@ -195,7 +308,7 @@ function openSideMenu(){
 }
 
 
-function closeSideMenu(){
+function closeSideMenu() {
 
     sideMenu.classList.remove("active");
 
@@ -217,6 +330,8 @@ menuOverlay.addEventListener("click", closeSideMenu);
 
 let selectedPizza = null;
 
+let selectedPromotionPrice = null;
+
 let selectedFlavors = [];
 
 let quantity = 1;
@@ -231,7 +346,8 @@ const crustOptionsData = [
         name: 'Regular Crust',
         description: "Classic pizza crust",
         price: 0,
-image: "https://institucional.ifood.com.br/wp-content/uploads/2024/06/sabores-de-pizza-frango-com-catupiry-768x512.jpg"    },
+        image: "https://institucional.ifood.com.br/wp-content/uploads/2024/06/sabores-de-pizza-frango-com-catupiry-768x512.jpg"
+    },
     {
         id: 'cheddar',
         name: 'Cheddar-Stuffed Crust',
@@ -308,10 +424,9 @@ function renderCrustOptions() {
         </div>
 
         <span class="crust-option-price">
-            ${
-                crust.price === 0
-                   ? "Included"
-                   : `+ R$ ${crust.price.toFixed(2)}`
+            ${crust.price === 0
+                ? "Included"
+                : `+ R$ ${crust.price.toFixed(2)}`
             }
         </span>
         `;
@@ -324,20 +439,20 @@ function renderCrustOptions() {
             selectedCrust = crust.id;
 
             document
-             .querySelectorAll(".crust-option")
-             .forEach(option => {
-                option.classList.remove("selected");
-             });
-             button.classList.add("selected");
+                .querySelectorAll(".crust-option")
+                .forEach(option => {
+                    option.classList.remove("selected");
+                });
+            button.classList.add("selected");
 
-             updateModal();
+            updateModal();
         });
         crustOptions.appendChild(button);
     });
 
 }
 
-    
+
 
 function showHalfAndHalfQuestion() {
     if (selectedPizza.category === "sweet") {
@@ -348,11 +463,11 @@ function showHalfAndHalfQuestion() {
         }
         addToCart(orderItem);
         closePizzaDetails();
-        document.getElementById("cart").scrollIntoView({
+        document.getElementById("cartPainel").scrollIntoView({
             behavior: "smooth"
         });
         return;
-        }
+    }
     if (!halfAndHalfQuestion) return;
     halfAndHalfQuestion.style.display = "block";
 
@@ -361,7 +476,7 @@ function showHalfAndHalfQuestion() {
 
 
 
-function openPizzaDetails(pizzaId) {
+function openPizzaDetails(pizzaId, promotionalPrice = null) {
 
     selectedPizza = pizzas.find(
         pizza => String(pizza.id) === String(pizzaId)
@@ -371,6 +486,10 @@ function openPizzaDetails(pizzaId) {
         console.error("Pizza not found:", pizzaId);
         return;
     }
+    selectedPromotionPrice =
+        promotionalPrice !== null
+            ? Number(promotionalPrice)
+            : null;
 
     quantity = 1;
 
@@ -385,19 +504,19 @@ function openPizzaDetails(pizzaId) {
     }
 
     const primaryFlavor =
-    document.getElementById("primaryFlavor");
+        document.getElementById("primaryFlavor");
 
-   const primaryFlavorName =
-    document.getElementById("primaryFlavorName");
+    const primaryFlavorName =
+        document.getElementById("primaryFlavorName");
 
-   if (primaryFlavor) {
-    primaryFlavor.style.display = "none";
-}
+    if (primaryFlavor) {
+        primaryFlavor.style.display = "none";
+    }
 
-  if (primaryFlavorName) {
-    primaryFlavorName.textContent =
-        selectedPizza.name;
-}
+    if (primaryFlavorName) {
+        primaryFlavorName.textContent =
+            selectedPizza.name;
+    }
 
     const flavorsSection = document.querySelector(".flavors-section");
     if (flavorsSection) {
@@ -424,13 +543,13 @@ function openPizzaDetails(pizzaId) {
             selectedPizza.name
         );
 
-renderFlavorOptions();
+    renderFlavorOptions();
 
-updateFlavorCount();
+    updateFlavorCount();
 
-renderCrustOptions();
+    renderCrustOptions();
 
-updateModal();
+    updateModal();
 
     pizzaModal.classList.add("active");
 }
@@ -450,38 +569,38 @@ function renderFlavorOptions() {
     // NORMAL MODE
     // =========================================
 
-if (!choosingSecondFlavor) {
+    if (!choosingSecondFlavor) {
 
-    // Voltar para o estado normal
-    const primaryFlavor =
-        document.getElementById("primaryFlavor");
+        // Voltar para o estado normal
+        const primaryFlavor =
+            document.getElementById("primaryFlavor");
 
-    const flavorTitle =
-        document.getElementById("flavorTitle");
+        const flavorTitle =
+            document.getElementById("flavorTitle");
 
-    const flavorHelp =
-        document.getElementById("flavorHelp");
+        const flavorHelp =
+            document.getElementById("flavorHelp");
 
-    if (primaryFlavor) {
-        primaryFlavor.style.display = "none";
+        if (primaryFlavor) {
+            primaryFlavor.style.display = "none";
+        }
+
+        if (flavorTitle) {
+            flavorTitle.textContent = "Choose a flavor";
+        }
+
+        if (flavorHelp) {
+            flavorHelp.textContent =
+                "Choose one flavor for your pizza.";
+        }
+
+        // Criar sabores normalmente
+        savoryPizzas.forEach(pizza => {
+            createFlavorOption(pizza);
+        });
+
+        return;
     }
-
-    if (flavorTitle) {
-        flavorTitle.textContent = "Choose a flavor";
-    }
-
-    if (flavorHelp) {
-        flavorHelp.textContent =
-            "Choose one flavor for your pizza.";
-    }
-
-    // Criar sabores normalmente
-    savoryPizzas.forEach(pizza => {
-        createFlavorOption(pizza);
-    });
-
-    return;
-}
 
 
     // =========================================
@@ -558,9 +677,9 @@ function createFlavorOption(pizza) {
         <div class="flavor-option-image">
 
             ${getPizzaImage(
-                pizza.image,
-                pizza.name
-            )}
+        pizza.image,
+        pizza.name
+    )}
 
         </div>
 
@@ -687,6 +806,7 @@ function finishHalfAndHalf() {
     }
 
     addToCart(orderItem);
+    openCart();
 
     // Reset
     selectedPizza = null;
@@ -708,11 +828,7 @@ function finishHalfAndHalf() {
 
     closePizzaDetails();
 
-    document
-        .getElementById("cart")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
+    openCart();
 }
 
 function updateFlavorCount() {
@@ -747,7 +863,10 @@ function updateModal() {
 
     const crust = getSelectedCrustOption();
 
-    const unitPrice = selectedPizza.price + crust.price;
+    const basePrice =
+        selectedPromotionPrice ?? selectedPizza.price;
+
+    const unitPrice = basePrice + crust.price;
     const total = unitPrice * quantity;
 
     modalPrice.textContent =
@@ -853,16 +972,18 @@ function createPizzaOrderItem() {
         notes: notes,
 
 
-       crust: getSelectedCrustOption().name,
+        crust: getSelectedCrustOption().name,
 
-       unitPrice:
-         selectedPizza.price + getSelectedCrustOption().price,
+        unitPrice:
+            (selectedPromotionPrice ?? selectedPizza.price) +
+            getSelectedCrustOption().price,
+        isPromotion: selectedPromotionPrice !== null,
 
-       total:
-        (
-         selectedPizza.price +
-         getSelectedCrustOption().price
-        ) * quantity
+        total:
+            (
+                (selectedPromotionPrice ?? selectedPizza.price) +
+                getSelectedCrustOption().price
+            ) * quantity
     };
 
     return orderItem;
@@ -884,11 +1005,8 @@ keepOneFlavor.addEventListener(
         addToCart(orderItem);
 
         closePizzaDetails();
-        document
-             .getElementById("cart")
-                .scrollIntoView({
-                    behavior: "smooth"
-                });
+
+        openCart();
     }
 );
 
@@ -914,6 +1032,7 @@ chooseSecondFlavor.addEventListener(
         }
 
     }
+
 );
 
 
@@ -959,6 +1078,7 @@ if (addAnotherPizza) {
 
         }
     );
+
 
 }
 
@@ -1092,30 +1212,71 @@ console.log(
 );
 
 // ========================================
-// ABOUT US — SHOW ON CLICK
+// HOME AND ABOUT US NAVIGATION
 // ========================================
 
 const aboutLink = document.querySelector(
     '.side-menu-nav a[href="#about"]'
 );
 
-const aboutSection = document.getElementById("about");
+const homeLink = document.querySelector(
+    '.side-menu-nav a[href="#"]'
+);
 
-if (aboutLink && aboutSection) {
+function showAboutUs() {
 
-    aboutLink.addEventListener("click", function(event) {
+    document.body.classList.add("about-view");
 
-        event.preventDefault();
-
-        // Show About Us
-        aboutSection.classList.add("active");
-
-        // Scroll to the section
-        aboutSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-    });
+    closeSideMenu();
 
 }
+
+function showHome() {
+
+    document.body.classList.remove("about-view");
+
+    closeSideMenu();
+
+}
+
+aboutLink.addEventListener("click", function (event) {
+
+    event.preventDefault();
+
+    showAboutUs();
+
+});
+
+homeLink.addEventListener("click", function (event) {
+
+    event.preventDefault();
+
+    showHome();
+
+});
+
+// ========================================
+// LIGHT AND DARK MODE
+// ========================================
+
+const themeButton = document.querySelector(".theme-button");
+
+function applyTheme(theme) {
+    document.body.classList.toggle("dark-theme", theme === "dark");
+
+    themeButton.textContent = theme === "dark" ? "☀️" : "🌙";
+
+    localStorage.setItem("theme", theme);
+}
+
+// Load saved theme
+const savedTheme = localStorage.getItem("theme") || "light";
+
+applyTheme(savedTheme);
+
+// Toggle theme
+themeButton.addEventListener("click", function () {
+    const isDark = document.body.classList.contains("dark-theme");
+
+    applyTheme(isDark ? "light" : "dark");
+});

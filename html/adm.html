@@ -84,6 +84,10 @@
                     </span>
 
                 </button>
+                <button class="admin-nav-item" id="promotionsNav">
+    <span>🏷️</span>
+    <span>Promotions</span>
+</button>
 
 
                 <button class="admin-nav-item" id="analyticsNav" >
@@ -566,6 +570,37 @@
 
 </section>
 
+<!-- ===============================
+     PROMOTIONS PAGE
+=============================== -->
+
+<section class="admin-page promotions-page" id="promotionsPage">
+
+    <div class="page-section-header">
+
+        <div>
+            <span>MARKETING</span>
+            <h2>Manage Promotions</h2>
+            <p>Create special offers for your customers.</p>
+        </div>
+
+        <button
+            class="add-product-button"
+            id="addPromotionButton"
+        >
+            + Add Promotion
+        </button>
+
+    </div>
+
+    <div
+        class="products-grid"
+        id="promotionsGrid"
+    >
+        <!-- Promotions will be rendered here -->
+    </div>
+
+</section>
 <!-- Analytics Section -->
  <section class="admin-page analytics-page" id="analyticsPage">
 
@@ -1242,6 +1277,115 @@
         Update Status
     </button>
 </div>
+
+    </div>
+
+</div>
+<!-- ========================================
+     ADD PROMOTION MODAL
+======================================== -->
+
+<div class="product-modal-overlay" id="promotionModal">
+
+    <div class="product-modal">
+
+        <button
+            class="product-modal-close"
+            id="closePromotionModal"
+        >
+            ×
+        </button>
+
+        <div class="product-modal-header">
+
+            <span>MARKETING</span>
+
+            <h2 id="promotionModalTitle">
+                Add Promotion
+            </h2>
+
+            <p>
+                Create a special offer for one of your products.
+            </p>
+
+        </div>
+
+        <form id="promotionForm">
+
+            <div class="product-form-group">
+
+                <label for="promotionProduct">
+                    Select Product
+                </label>
+
+                <select id="promotionProduct" required>
+
+                    <option value="">
+                        Choose a product
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="product-form-group">
+
+                <label for="promotionPrice">
+                    Promotional Price
+                </label>
+
+                <input
+                    type="number"
+                    id="promotionPrice"
+                    placeholder="29.90"
+                    min="0.01"
+                    step="0.01"
+                    required
+                >
+
+            </div>
+
+            <div class="product-form-group">
+
+                <label>
+                    Promotion Status
+                </label>
+
+                <select id="promotionStatus">
+
+                    <option value="true">
+                        Active
+                    </option>
+
+                    <option value="false">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="product-form-actions">
+
+                <button
+                    type="button"
+                    class="product-cancel-button"
+                    id="cancelPromotionButton"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="product-save-button"
+                    id="savePromotionButton"
+                >
+                    Save Promotion
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 
